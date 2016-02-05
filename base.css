@@ -1,0 +1,24 @@
+body
+{
+  margin: 0;
+  padding: 0;
+}
+
+div#header_outer
+{
+  background: #2ECC71;
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
+}
+
+div#header_outer h1
+{
+  color: white;
+  font-family: Montserrat;
+  font-size: 48px;
+  font-weight: 700;
+
+  margin: 0px;
+  padding: 0;
+}

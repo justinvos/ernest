@@ -19,7 +19,14 @@
       $question_id = $_REQUEST['question_id'];
 
       $query->execute();
-      return $query->fetchAll();
+      $dataset = $query->fetchAll();
+
+      $results['question'] = array(
+        'id' => $dataset[0]['id'],
+        'account' => $dataset[0]['account'],
+        'question' => $dataset[0]['question'],
+        'creation_time' => $dataset[0]['creation_time']
+      );
     }
     else
     {
