@@ -30,7 +30,6 @@
           if($dataset[0]['creation_time'] + (30 * 60) > $_SERVER['REQUEST_TIME'])
           {
             $results['authenticated'] = true;
-
           }
           else
           {
@@ -42,8 +41,21 @@
             $token = $_REQUEST['token'];
 
             $query->execute();
+
+            $results['error'] = true;
+            $results['error_msg'] = 'Not authenticated';
           }
         }
+        else
+        {
+          $results['error'] = true;
+          $results['error_msg'] = 'Not authenticated';
+        }
+      }
+      else
+      {
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
       }
     }
     else
@@ -56,19 +68,17 @@
   }
   else if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    if(isset($_REQUEST['account_id']) && isset($_REQUEST['password']))
+    if(isset($_REQUEST['email']) && isset($_REQUEST['password']))
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT accounts.password, accounts.salt FROM accounts WHERE accounts.id=:account_id;");
+      $query = $db->prepare("SELECT accounts.id, accounts.password, accounts.salt FROM accounts WHERE accounts.email=:email;");
 
-      $query->bindParam(":account_id", $account_id);
-      $account_id = $_REQUEST['account_id'];
+      $query->bindParam(":email", $email);
+      $email = $_REQUEST['email'];
 
       $query->execute();
       $dataset = $query->fetchAll();
-
-      $results['authorized'] = false;
 
       if(sizeof($dataset) > 0)
       {
@@ -76,18 +86,30 @@
         {
           $query = $db->prepare("INSERT INTO sessions (account, token, creation_time) VALUES (:account, :token, :creation_time);");
 
-          $query->bindParam(":account", $account);
-          $query->bindParam(":token", $token);
-          $query->bindParam(":creation_time", $creation_time);
-          $account = $_REQUEST['account_id'];
+          $account = $dataset[0]['id'];
           $token = md5(mt_rand());
           $creation_time = $_SERVER['REQUEST_TIME'];
 
+
+          $query->bindParam(":account", $account);
+          $query->bindParam(":token", $token);
+          $query->bindParam(":creation_time", $creation_time);
+
           $query->execute();
 
-          $results['authorized'] = true;
+          $results['account_id'] = $account;
           $results['token'] = $token;
         }
+        else
+        {
+          $results['error'] = true;
+          $results['error_msg'] = 'Not authenticated';
+        }
+      }
+      else
+      {
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
       }
     }
     else
