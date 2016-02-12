@@ -13,7 +13,7 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT answers.id,answers.question_id,answers.answer FROM answers WHERE answers.question_id=:question_id;");
+      $query = $db->prepare("SELECT answers.id,answers.question,answers.answer,COUNT(votes.id) AS `count` FROM answers LEFT JOIN votes ON answers.id=votes.answer WHERE answers.question=:question_id GROUP BY answers.id;");
 
       $query->bindParam(":question_id", $question_id);
       $question_id = $_REQUEST['question_id'];
@@ -26,9 +26,10 @@
       for($i = 0; $i < sizeof($dataset); $i++)
       {
         array_push($results['answers'], array(
-          'id' => $dataset['id'],
-          'question_id' => $dataset['question_id'],
-          'answer' => $dataset['answer']
+          'id' => $dataset[$i]['id'],
+          'question' => $dataset[$i]['question'],
+          'answer' => $dataset[$i]['answer'],
+          'count' => $dataset[$i]['count']
         ));
       }
     }
