@@ -1,5 +1,7 @@
 body
 {
+  font-family: Montserrat;
+
   margin: 0;
   padding: 0;
 }
@@ -8,17 +10,98 @@ div#header_outer
 {
   background: #2ECC71;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px 60px;
   width: 100%;
 }
 
-div#header_outer h1
+h1, h2, h3
+{
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+h1
 {
   color: white;
-  font-family: Montserrat;
   font-size: 48px;
-  font-weight: 700;
+}
 
-  margin: 0px;
-  padding: 0;
+
+div#body_outer
+{
+  box-sizing: border-box;
+  padding: 20px 60px;
+  width: 100%;
+}
+
+
+h3
+{
+  color: #888;
+  font-size: 20px;
+}
+
+h2
+{
+  font-size: 24px;
+  font-weight: 400;
+}
+
+ul
+{
+  list-style: none;
+  margin: 0;
+  padding: 30px 0;
+}
+
+li
+{
+  font-size: 18px;
+}
+
+.box
+{
+  color: #555;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.box:hover
+{
+  color: black;
+}
+
+li.box
+{
+  box-sizing: border-box;
+  padding: 20px 15px;
+  width: 900px;
+}
+
+.answer.notselected
+{
+  color: #999;
+  cursor: not-allowed;
+}
+
+.answer.selected
+{
+  color: black;
+}
+
+#submit_button
+{
+  background: #666;
+  border-radius: 4px;
+  color: white;
+  font-size: 20px;
+  padding: 15px;
+  text-align: center;
+  width: 300px;
+}
+
+#submit_button:hover
+{
+  background: #555;
 }
