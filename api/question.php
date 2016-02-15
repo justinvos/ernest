@@ -13,7 +13,7 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT questions.id,questions.account,questions.question,questions.creation_time FROM questions WHERE questions.id=:question_id;");
+      $query = $db->prepare("SELECT questions.id,courses.name AS `course`,questions.account,questions.question,questions.creation_time FROM questions INNER JOIN courses ON questions.course=courses.id WHERE questions.id=:question_id;");
 
       $query->bindParam(":question_id", $question_id);
       $question_id = $_REQUEST['question_id'];
@@ -23,6 +23,7 @@
 
       $results['question'] = array(
         'id' => $dataset[0]['id'],
+        'course' => $dataset[0]['course'],
         'account' => $dataset[0]['account'],
         'question' => $dataset[0]['question'],
         'creation_time' => $dataset[0]['creation_time']
