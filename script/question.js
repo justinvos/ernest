@@ -30,7 +30,7 @@ var answerClick = function(answer_id)
     }
   }
 
-}
+};
 
 
 var submitClick = function(account, token)

@@ -6,6 +6,16 @@
     header('Location: error.php?error_msg=Could%20not%20find%20your%20session.%20Try%20logging%20in%20again.');
   }
 
+  $curl = curl_init("localhost/ernest/api/session.php?account_id=" . $_SESSION['account_id'] . "&token=" . $_SESSION['token']);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  $session = json_decode(curl_exec($curl), true);
+
+  if(!isset($session) || sizeof($session) == 0 || !$session['authenticated'])
+  {
+    header('Location: error.php?error_msg=Your%20session%20has%20expired.%20Try%20logging%20in%20again.');
+  }
+
+
   $curl = curl_init("localhost/ernest/api/question.php?question_id=" . $_REQUEST['question_id']);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $question = json_decode(curl_exec($curl), true);
@@ -52,11 +62,11 @@
 
       </ul>
 
-      <a id='submit_button' class='box' onclick='submitClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>")'>Submit</a>
+      <a id='submit_button' class='box' onclick='submitClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>")'>Submit</a>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src='question.js'></script>
+    <script src='script/question.js'></script>
   </body>
 
 
