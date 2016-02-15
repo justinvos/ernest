@@ -43,7 +43,7 @@
     $query = $db->prepare("CREATE TABLE sessions (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, account INT(10) UNSIGNED, token VARCHAR(32), creation_time INT(10) UNSIGNED);");
     $query->execute();
 
-    $query = $db->prepare("CREATE TABLE questions (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, course INT(10) UNSIGNED, account INT(10) UNSIGNED, question VARCHAR(140), creation_time INT(10) UNSIGNED);");
+    $query = $db->prepare("CREATE TABLE questions (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, course INT(10) UNSIGNED, account INT(10) UNSIGNED, question VARCHAR(140), creation_time INT(10) UNSIGNED, upvotes INT(10) UNSIGNED, downvotes INT(10) UNSIGNED);");
     $query->execute();
 
     $query = $db->prepare("CREATE TABLE answers (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, question INT(10) UNSIGNED, answer VARCHAR(140) UNSIGNED, correct INT(1));");
