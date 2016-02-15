@@ -1,7 +1,7 @@
 <?php
   session_start();
 
-  if(!isset($_SESSION['account']) || !isset($_SESSION['token']))
+  if(!isset($_SESSION['account_id']) || !isset($_SESSION['token']))
   {
     header('Location: error.php?error_msg=Could%20not%20find%20your%20session.%20Try%20logging%20in%20again.');
   }

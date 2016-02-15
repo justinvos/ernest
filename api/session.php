@@ -84,6 +84,14 @@
       {
         if(md5($_REQUEST['password'] . $dataset[0]['salt']) == $dataset[0]['password'])
         {
+          $query = $db->prepare("DELETE FROM sessions WHERE account=:account;");
+
+          $account = $dataset[0]['id'];
+
+          $query->bindParam(":account", $account);
+
+          $query->execute();
+
           $query = $db->prepare("INSERT INTO sessions (account, token, creation_time) VALUES (:account, :token, :creation_time);");
 
           $account = $dataset[0]['id'];
@@ -96,6 +104,8 @@
           $query->bindParam(":creation_time", $creation_time);
 
           $query->execute();
+
+
 
           $results['account_id'] = $account;
           $results['token'] = $token;
