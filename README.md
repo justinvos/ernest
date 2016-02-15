@@ -16,11 +16,28 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 
 ## Roadmap
 1. Have an interface for asking questions. (February 2016)
-2. Have an interface to view the listing of questions in my course. (February 2016)
-3. Be able to register a new account. (February 2016)
-4. Be able to login with an account. (February 2016)
+2. Be able to register a new account. (February 2016)
+3. Be able to join a course. (February 2016)
+4. Be able to approve applications to join a course. (February 2016)
 5. Have an explanation to why a certain answer was correct. (March 2016)
 6. Be able to comment on questions. (March 2016)
 7. Get points allocated to users based on their activity. (March 2016)
 8. Be able to up-vote and down-vote questions on its quality. (March 2016)
 9. Be able to attach descriptive tags to questions. (April 2016)
+
+## Config
+The config.json file contains all the configuration data for setting up your ernest instance. These variables are required to be set:
+* db_address
+* db_name
+* db_username
+* db_password
+
+### Example
+
+
+`{
+  "db_address":"localhost",
+  "db_name":"ernest",
+  "db_username":"your_username",
+  "db_password":"your_password"
+}`
