@@ -38,6 +38,6 @@ The config.json file contains all the configuration data for setting up your ern
 `{
   "db_address":"localhost",
   "db_name":"ernest",
-  "db_username":"your_username",
-  "db_password":"your_password"
+  "db_username":"username",
+  "db_password":"password123"
 }`
