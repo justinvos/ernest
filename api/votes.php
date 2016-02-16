@@ -21,38 +21,18 @@
       $query->execute();
       $dataset = $query->fetchAll();
 
-      if(sizeof($dataset) > 0)
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        if($_REQUEST['token'] == $dataset[0]['token'])
-        {
-          if($dataset[0]['creation_time'] + (30 * 60) > $_SERVER['REQUEST_TIME'])
-          {
-            $query = $db->prepare("INSERT INTO votes (account, answer, vote_time) VALUES (:account, :answer, :vote_time);");
+        $query = $db->prepare("INSERT INTO votes (account, answer, vote_time) VALUES (:account, :answer, :vote_time);");
 
-            $query->bindParam(":account", $account);
-            $query->bindParam(":answer", $answer);
-            $query->bindParam(":vote_time", $vote_time);
-            $account = $_REQUEST['account'];
-            $answer = $_REQUEST['answer'];
-            $vote_time = $_SERVER['REQUEST_TIME'];
+        $query->bindParam(":account", $account);
+        $query->bindParam(":answer", $answer);
+        $query->bindParam(":vote_time", $vote_time);
+        $account = $_REQUEST['account'];
+        $answer = $_REQUEST['answer'];
+        $vote_time = $_SERVER['REQUEST_TIME'];
 
-            $query->execute();
-          }
-          else
-          {
-            http_response_code(401);
-
-            $results['error'] = true;
-            $results['error_msg'] = 'Not authenticated';
-          }
-        }
-        else
-        {
-          http_response_code(401);
-
-          $results['error'] = true;
-          $results['error_msg'] = 'Not authenticated';
-        }
+        $query->execute();
       }
       else
       {
