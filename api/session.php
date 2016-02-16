@@ -87,6 +87,35 @@
       $results['error_msg'] = 'Missing paramater(s)';
     }
   }
+  else if($_SERVER['REQUEST_METHOD'] == "DELETE")
+  {
+    parse_str(file_get_contents('php://input'), $_ARGS);
+
+    if(isset($_ARGS['account']) && isset($_ARGS['token']))
+    {
+      $db = connect();
+
+      if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
+      {
+        $query = $db->prepare("DELETE FROM sessions WHERE account=:account AND token=:token;");
+
+        $account = $_ARGS['account'];
+        $token = $_ARGS['token'];
+
+        $query->bindParam(":account", $account);
+        $query->bindParam(":token", $token);
+
+        $query->execute();
+      }
+    }
+    else
+    {
+      http_response_code(400);
+
+      $results['error'] = true;
+      $results['error_msg'] = 'Missing paramater(s)';
+    }
+  }
   else
   {
     http_response_code(400);
