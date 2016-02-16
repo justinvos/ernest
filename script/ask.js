@@ -17,7 +17,7 @@ var askClick = function(account, token, course)
   $.ajax({
     data : {'account' : account, 'token' : token, 'course' : course, 'question' : document.getElementById('question_box').value},
     type: 'POST',
-    url: 'api/question.php',
+    url: 'api/questions.php',
     success: function(data){
       var question_id = JSON.parse(data)['question'];
 

@@ -40,12 +40,52 @@
       $results['error_msg'] = 'Missing paramater(s)';
     }
   }
+  else if($_SERVER['REQUEST_METHOD'] == 'POST')
+  {
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['question']) && isset($_REQUEST['course']))
+    {
+      $db = connect();
+
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
+      {
+        $query = $db->prepare("INSERT INTO questions (course, account, question, creation_time) VALUES (:course, :account, :question, :creation_time);");
+
+        $query->bindParam(":course", $course);
+        $query->bindParam(":account", $account);
+        $query->bindParam(":question", $question);
+        $query->bindParam(":creation_time", $creation_time);
+
+        $course = $_REQUEST['course'];
+        $account = $_REQUEST['account'];
+        $question = $_REQUEST['question'];
+        $creation_time = $_SERVER['REQUEST_TIME'];
+
+        $query->execute();
+
+        $results['question'] = $db->lastInsertId();
+      }
+      else
+      {
+        http_response_code(401);
+
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
+      }
+    }
+    else
+    {
+      http_response_code(400);
+
+      $results['error'] = true;
+      $results['error_msg'] = 'Missing paramater(s)';
+    }
+  }
   else
   {
     http_response_code(400);
 
     $results['error'] = true;
-    $results['error_msg'] = 'The resource being accessed only accepts GET requests';
+    $results['error_msg'] = 'The resource being accessed only accepts GET and POST requests';
   }
 
   echo json_encode($results);
