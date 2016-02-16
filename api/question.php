@@ -39,20 +39,35 @@
   }
   else if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    if(isset($_REQUEST['account']) && isset($_REQUEST['question']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['question']) && isset($_REQUEST['course']))
     {
       $db = connect();
 
-      $query = $db->prepare("INSERT INTO questions (account, question, creation_time) VALUES (:account, :question, :creation_time);");
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
+      {
+        $query = $db->prepare("INSERT INTO questions (course, account, question, creation_time) VALUES (:course, :account, :question, :creation_time);");
 
-      $query->bindParam(":account", $account);
-      $query->bindParam(":question", $question);
-      $query->bindParam(":creation_time", $creation_time);
-      $account = $_REQUEST['account'];
-      $question = $_REQUEST['question'];
-      $creation_time = $_SERVER['REQUEST_TIME'];
+        $query->bindParam(":course", $course);
+        $query->bindParam(":account", $account);
+        $query->bindParam(":question", $question);
+        $query->bindParam(":creation_time", $creation_time);
 
-      $query->execute();
+        $course = $_REQUEST['course'];
+        $account = $_REQUEST['account'];
+        $question = $_REQUEST['question'];
+        $creation_time = $_SERVER['REQUEST_TIME'];
+
+        $query->execute();
+
+        $results['question'] = $db->lastInsertId();
+      }
+      else
+      {
+        http_response_code(401);
+
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
+      }
     }
     else
     {

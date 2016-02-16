@@ -10,6 +10,31 @@
     return $db;
   }
 
+  function authenticate($db, $account, $token)
+  {
+    $db = connect();
+
+    $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account_id;");
+
+    $query->bindParam(":account_id", $account_id);
+    $account_id = $_REQUEST['account'];
+
+    $query->execute();
+    $dataset = $query->fetchAll();
+
+    if(sizeof($dataset) > 0)
+    {
+      if($_REQUEST['token'] == $dataset[0]['token'])
+      {
+        if($dataset[0]['creation_time'] + (30 * 60) > $_SERVER['REQUEST_TIME'])
+        {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   function init()
   {
     $db = connect();

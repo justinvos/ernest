@@ -43,27 +43,35 @@
   }
   else if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    if(isset($_REQUEST['question_id']) && isset($_REQUEST['answers']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['question_id']) && isset($_REQUEST['answers']))
     {
       $db = connect();
 
-      $query = $db->prepare("INSERT INTO answers (question_id, answer) VALUES (:question_id, :answer);");
-
-      $query->bindParam(":question_id", $question_id);
-      $query->bindParam(":answer", $answer);
-
-      $answers = explode(chr(31), $_REQUEST['answers']);
-
-      $question_id = $_REQUEST['question_id'];
-
-      for($i = 0; $i < sizeof($answers); $i++)
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        $answer = $answers[$i];
+        $query = $db->prepare("INSERT INTO answers (question, answer) VALUES (:question_id, :answer);");
 
-        $query->execute();
+        $query->bindParam(":question_id", $question_id);
+        $query->bindParam(":answer", $answer);
+
+        $answers = explode(chr(31), $_REQUEST['answers']);
+
+        $question_id = $_REQUEST['question_id'];
+
+        for($i = 0; $i < sizeof($answers); $i++)
+        {
+          $answer = $answers[$i];
+
+          $query->execute();
+        }
       }
+      else
+      {
+        http_response_code(401);
 
-
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
+      }
     }
     else
     {
