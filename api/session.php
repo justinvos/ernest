@@ -13,50 +13,7 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account_id;");
-
-      $query->bindParam(":account_id", $account_id);
-      $account_id = $_REQUEST['account_id'];
-
-      $query->execute();
-      $dataset = $query->fetchAll();
-
-      $results['authenticated'] = false;
-
-      if(sizeof($dataset) > 0)
-      {
-        if($_REQUEST['token'] == $dataset[0]['token'])
-        {
-          if($dataset[0]['creation_time'] + (30 * 60) > $_SERVER['REQUEST_TIME'])
-          {
-            $results['authenticated'] = true;
-          }
-          else
-          {
-            $query = $db->prepare("DELETE FROM sessions WHERE sessions.account=:account_id AND sessions.token=:token;");
-
-            $query->bindParam(":account_id", $account_id);
-            $account_id = $_REQUEST['account_id'];
-            $query->bindParam(":token", $token);
-            $token = $_REQUEST['token'];
-
-            $query->execute();
-
-            $results['error'] = true;
-            $results['error_msg'] = 'Not authenticated';
-          }
-        }
-        else
-        {
-          $results['error'] = true;
-          $results['error_msg'] = 'Not authenticated';
-        }
-      }
-      else
-      {
-        $results['error'] = true;
-        $results['error_msg'] = 'Not authenticated';
-      }
+      $results['authenticated'] = authenticate($db, $_REQUEST['account_id'], $_REQUEST['token']);
     }
     else
     {
@@ -72,7 +29,7 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT accounts.id, accounts.password, accounts.salt FROM accounts WHERE accounts.email=:email;");
+      $query = $db->prepare("SELECT accounts.id, accounts.password, accounts.salt FROM accounts WHERE accounts.email=:email LIMIT 1;");
 
       $query->bindParam(":email", $email);
       $email = $_REQUEST['email'];

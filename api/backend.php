@@ -16,8 +16,7 @@
 
     $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account_id;");
 
-    $query->bindParam(":account_id", $account_id);
-    $account_id = $_REQUEST['account'];
+    $query->bindParam(":account_id", $account);
 
     $query->execute();
     $dataset = $query->fetchAll();
@@ -26,9 +25,20 @@
     {
       if($_REQUEST['token'] == $dataset[0]['token'])
       {
-        if($dataset[0]['creation_time'] + (30 * 60) > $_SERVER['REQUEST_TIME'])
+        if($dataset[0]['creation_time'] + (120 * 60) > $_SERVER['REQUEST_TIME'])
         {
           return true;
+        }
+        else
+        {
+          $query = $db->prepare("DELETE FROM sessions WHERE sessions.account=:account_id AND sessions.token=:token;");
+
+          $query->bindParam(":account_id", $account_id);
+          $account_id = $_REQUEST['account_id'];
+          $query->bindParam(":token", $token);
+          $token = $_REQUEST['token'];
+
+          $query->execute();
         }
       }
     }

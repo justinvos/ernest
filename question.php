@@ -20,7 +20,7 @@
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $question = json_decode(curl_exec($curl), true);
 
-  $curl = curl_init("localhost/ernest/api/answer.php?question_id=" . $_REQUEST['question_id']);
+  $curl = curl_init("localhost/ernest/api/answers.php?question_id=" . $_REQUEST['question_id']);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $answers = json_decode(curl_exec($curl), true);
 ?>
