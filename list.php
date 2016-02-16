@@ -22,7 +22,7 @@
   }
   else
   {
-    $curl = curl_init("localhost/ernest/api/courses.php?course_id=" . $_REQUEST['course']);
+    $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $course = json_decode(curl_exec($curl), true);
 

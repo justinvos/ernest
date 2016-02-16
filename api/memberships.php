@@ -37,6 +37,8 @@
       }
       else
       {
+        http_response_code(401);
+
         $results['error'] = true;
         $results['error_msg'] = 'Not authenticated';
       }

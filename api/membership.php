@@ -9,26 +9,30 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['account_id']) && isset($_REQUEST['token']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['course']))
     {
       $db = connect();
 
-      if(authenticate($db, $_REQUEST['account_id'], $_REQUEST['token']))
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        $query = $db->prepare("SELECT accounts.id, accounts.email, accounts.creation_time FROM accounts WHERE accounts.id=:account_id;");
+        $query = $db->prepare("SELECT memberships.id FROM memberships INNER JOIN courses ON memberships.course=courses.id WHERE memberships.account=:account AND memberships.course=:course LIMIT 1;");
 
-        $query->bindParam(":account_id", $account_id);
-        $account_id = $_REQUEST['account_id'];
+        $query->bindParam(":account", $account);
+        $query->bindParam(":course", $course);
+        $account = $_REQUEST['account'];
+        $course = $_REQUEST['course'];
 
         $query->execute();
         $dataset = $query->fetchAll();
 
-        $results['account'] = array(
-          'id' => $dataset[0]['id'],
-          'email' => $dataset[0]['email'],
-          'creation_time' => $dataset[0]['creation_time']
-        );
-
+        if(sizeof($dataset) > 0)
+        {
+          $results['member'] = true;
+        }
+        else
+        {
+          $results['member'] = false;
+        }
       }
       else
       {
@@ -37,6 +41,8 @@
         $results['error'] = true;
         $results['error_msg'] = 'Not authenticated';
       }
+
+
     }
     else
     {

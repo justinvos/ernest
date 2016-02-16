@@ -2,6 +2,17 @@
 
   session_start();
 
+
+  if(!isset($_REQUEST['course']))
+  {
+    header('Location: error.php?error_msg=Could%20not%20find%20the%20course.');
+  }
+  else
+  {
+    $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $course = json_decode(curl_exec($curl), true);
+  }
 ?>
 
 
@@ -28,6 +39,8 @@
     </div>
 
     <div id='body_outer'>
+      <h3>COURSE</h3>
+      <h2><?php echo $course['course']['name']; ?></h2>
       <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
     </div>
 

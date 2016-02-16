@@ -9,34 +9,35 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['account_id']) && isset($_REQUEST['token']))
+    if(isset($_REQUEST['id']))
     {
       $db = connect();
 
-      if(authenticate($db, $_REQUEST['account_id'], $_REQUEST['token']))
+      $query = $db->prepare("SELECT courses.id, courses.name, courses.account, courses.creation_time FROM courses WHERE courses.id=:id LIMIT 1;");
+
+      $query->bindParam(":id", $id);
+      $id = $_REQUEST['id'];
+
+      $query->execute();
+      $dataset = $query->fetchAll();
+
+      if(sizeof($dataset) > 0)
       {
-        $query = $db->prepare("SELECT accounts.id, accounts.email, accounts.creation_time FROM accounts WHERE accounts.id=:account_id;");
-
-        $query->bindParam(":account_id", $account_id);
-        $account_id = $_REQUEST['account_id'];
-
-        $query->execute();
-        $dataset = $query->fetchAll();
-
-        $results['account'] = array(
+        $results['course'] = array(
           'id' => $dataset[0]['id'],
-          'email' => $dataset[0]['email'],
+          'name' => $dataset[0]['name'],
+          'account' => $dataset[0]['account'],
           'creation_time' => $dataset[0]['creation_time']
         );
-
       }
       else
       {
-        http_response_code(401);
+        http_response_code(404);
 
         $results['error'] = true;
-        $results['error_msg'] = 'Not authenticated';
+        $results['error_msg'] = 'Not Found';
       }
+
     }
     else
     {

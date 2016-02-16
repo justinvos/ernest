@@ -9,25 +9,49 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['course_id']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']))
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT courses.id, courses.name, courses.account, courses.creation_time FROM courses WHERE courses.id=:course_id;");
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
+      {
+        $query = $db->prepare("SELECT courses.id, courses.name, courses.account, courses.creation_time FROM courses WHERE courses.account=:account;");
 
-      $query->bindParam(":course_id", $course_id);
-      $course_id = $_REQUEST['course_id'];
+        $query->bindParam(":account", $account);
+        $account = $_REQUEST['account'];
 
-      $query->execute();
-      $dataset = $query->fetchAll();
+        $query->execute();
+        $dataset = $query->fetchAll();
 
-      $results['course'] = array(
-        'id' => $dataset[0]['id'],
-        'name' => $dataset[0]['name'],
-        'account' => $dataset[0]['account'],
-        'creation_time' => $dataset[0]['creation_time']
+        if(sizeof($dataset) > 0)
+        {
+          $results['courses'] = array();
 
-      );
+          for($i = 0; $i < sizeof($dataset); $i++)
+          {
+            array_push($results['courses'], array(
+              'id' => $dataset[$i]['id'],
+              'name' => $dataset[$i]['name'],
+              'account' => $dataset[$i]['account'],
+              'creation_time' => $dataset[$i]['creation_time']
+            ));
+          }
+        }
+        else
+        {
+          http_response_code(404);
+
+          $results['error'] = true;
+          $results['error_msg'] = 'Not Found';
+        }
+      }
+      else
+      {
+        http_response_code(401);
+
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
+      }
     }
     else
     {
