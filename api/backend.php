@@ -62,6 +62,9 @@
     $query = $db->prepare("DROP TABLE IF EXISTS sessions;");
     $query->execute();
 
+    $query = $db->prepare("DROP TABLE IF EXISTS memberships;");
+    $query->execute();
+
     $query = $db->prepare("DROP TABLE IF EXISTS accounts;");
     $query->execute();
 
@@ -73,6 +76,9 @@
     $query->execute();
 
     $query = $db->prepare("CREATE TABLE accounts (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, email VARCHAR(254), password VARCHAR(32), salt INT(10) UNSIGNED, creation_time INT(10) UNSIGNED);");
+    $query->execute();
+
+    $query = $db->prepare("CREATE TABLE memberships (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, account INT(10) UNSIGNED, course INT(10) UNSIGNED, moderator INT(1));");
     $query->execute();
 
     $query = $db->prepare("CREATE TABLE sessions (id INT(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY, account INT(10) UNSIGNED, token VARCHAR(32), creation_time INT(10) UNSIGNED);");
