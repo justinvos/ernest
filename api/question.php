@@ -9,14 +9,14 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['question_id']))
+    if(isset($_REQUEST['id']))
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT questions.id,courses.name AS `course`,questions.account,questions.question,questions.creation_time FROM questions INNER JOIN courses ON questions.course=courses.id WHERE questions.id=:question_id;");
+      $query = $db->prepare("SELECT questions.id,courses.name AS `course`,questions.account,questions.question,questions.creation_time FROM questions INNER JOIN courses ON questions.course=courses.id WHERE questions.id=:id;");
 
-      $query->bindParam(":question_id", $question_id);
-      $question_id = $_REQUEST['question_id'];
+      $query->bindParam(":id", $id);
+      $id = $_REQUEST['id'];
 
       $query->execute();
       $dataset = $query->fetchAll();

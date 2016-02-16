@@ -15,7 +15,7 @@
 
     session_start();
 
-    $_SESSION['account_id'] = $session['account_id'];
+    $_SESSION['account'] = $session['account'];
     $_SESSION['token'] = $session['token'];
 
     header('Location: index.php');

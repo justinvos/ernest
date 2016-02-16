@@ -1,28 +1,21 @@
 <?php
-  session_start();
 
-  if(!isset($_SESSION['account_id']) || !isset($_SESSION['token']))
+  include('frontend.php');
+
+  if(!isset($_REQUEST['id']))
   {
-    header('Location: error.php?error_msg=Could%20not%20find%20your%20session.%20Try%20logging%20in%20again.');
+    header('Location: error.php?error_msg=Could%20not%20find%20the%20course.');
   }
-
-  $curl = curl_init("localhost/ernest/api/session.php?account_id=" . $_SESSION['account_id'] . "&token=" . $_SESSION['token']);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $session = json_decode(curl_exec($curl), true);
-
-  if(!isset($session) || sizeof($session) == 0 || !$session['authenticated'])
+  else
   {
-    header('Location: error.php?error_msg=Your%20session%20has%20expired.%20Try%20logging%20in%20again.');
+    $curl = curl_init("localhost/ernest/api/question.php?id=" . $_REQUEST['id']);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $question = json_decode(curl_exec($curl), true);
+
+    $curl = curl_init("localhost/ernest/api/answers.php?question=" . $_REQUEST['id']);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $answers = json_decode(curl_exec($curl), true);
   }
-
-
-  $curl = curl_init("localhost/ernest/api/question.php?question_id=" . $_REQUEST['question_id']);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $question = json_decode(curl_exec($curl), true);
-
-  $curl = curl_init("localhost/ernest/api/answers.php?question_id=" . $_REQUEST['question_id']);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $answers = json_decode(curl_exec($curl), true);
 ?>
 
 

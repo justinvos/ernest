@@ -9,14 +9,14 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['question_id']))
+    if(isset($_REQUEST['question']))
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT answers.id,answers.question,answers.answer,COUNT(votes.id) AS `count` FROM answers LEFT JOIN votes ON answers.id=votes.answer WHERE answers.question=:question_id GROUP BY answers.id;");
+      $query = $db->prepare("SELECT answers.id,answers.question,answers.answer,COUNT(votes.id) AS `count` FROM answers LEFT JOIN votes ON answers.id=votes.answer WHERE answers.question=:question GROUP BY answers.id;");
 
-      $query->bindParam(":question_id", $question_id);
-      $question_id = $_REQUEST['question_id'];
+      $query->bindParam(":question", $question);
+      $question = $_REQUEST['question'];
 
       $query->execute();
       $dataset = $query->fetchAll();
@@ -43,20 +43,20 @@
   }
   else if($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['question_id']) && isset($_REQUEST['answers']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['question']) && isset($_REQUEST['answers']))
     {
       $db = connect();
 
       if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        $query = $db->prepare("INSERT INTO answers (question, answer) VALUES (:question_id, :answer);");
+        $query = $db->prepare("INSERT INTO answers (question, answer) VALUES (:question, :answer);");
 
-        $query->bindParam(":question_id", $question_id);
+        $query->bindParam(":question", $question);
         $query->bindParam(":answer", $answer);
 
         $answers = explode(chr(31), $_REQUEST['answers']);
 
-        $question_id = $_REQUEST['question_id'];
+        $question = $_REQUEST['question'];
 
         for($i = 0; $i < sizeof($answers); $i++)
         {

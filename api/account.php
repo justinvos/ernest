@@ -9,16 +9,16 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['account_id']) && isset($_REQUEST['token']))
+    if(isset($_REQUEST['id']) && isset($_REQUEST['token']))
     {
       $db = connect();
 
-      if(authenticate($db, $_REQUEST['account_id'], $_REQUEST['token']))
+      if(authenticate($db, $_REQUEST['id'], $_REQUEST['token']))
       {
         $query = $db->prepare("SELECT accounts.id, accounts.email, accounts.creation_time FROM accounts WHERE accounts.id=:account_id;");
 
-        $query->bindParam(":account_id", $account_id);
-        $account_id = $_REQUEST['account_id'];
+        $query->bindParam(":id", $id);
+        $id = $_REQUEST['id'];
 
         $query->execute();
         $dataset = $query->fetchAll();

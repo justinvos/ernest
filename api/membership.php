@@ -41,8 +41,6 @@
         $results['error'] = true;
         $results['error_msg'] = 'Not authenticated';
       }
-
-
     }
     else
     {

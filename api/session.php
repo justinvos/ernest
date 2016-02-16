@@ -9,11 +9,11 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['account_id']) && isset($_REQUEST['token']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']))
     {
       $db = connect();
 
-      $results['authenticated'] = authenticate($db, $_REQUEST['account_id'], $_REQUEST['token']);
+      $results['authenticated'] = authenticate($db, $_REQUEST['account'], $_REQUEST['token']);
     }
     else
     {
@@ -64,7 +64,7 @@
 
 
 
-          $results['account_id'] = $account;
+          $results['account'] = $account;
           $results['token'] = $token;
         }
         else

@@ -19,7 +19,7 @@ var askClick = function(account, token, course)
     type: 'POST',
     url: 'api/questions.php',
     success: function(data){
-      var question_id = JSON.parse(data)['question'];
+      var question = JSON.parse(data)['question'];
 
       var answers = [];
 
@@ -34,7 +34,7 @@ var askClick = function(account, token, course)
       }
 
       $.ajax({
-        data : {'account' : account, 'token' : token, 'question_id' : question_id, 'answers' : answers.join(String.fromCharCode(31))},
+        data : {'account' : account, 'token' : token, 'question' : question, 'answers' : answers.join(String.fromCharCode(31))},
         type: 'POST',
         url: 'api/answer.php'
       });
