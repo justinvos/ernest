@@ -15,7 +15,7 @@
 
       if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        $query = $db->prepare("SELECT memberships.id,courses.name,memberships.moderator FROM memberships INNER JOIN courses ON memberships.course=courses.id WHERE memberships.account=:account;");
+        $query = $db->prepare("SELECT memberships.id,courses.id AS course,courses.name AS name,memberships.moderator FROM memberships INNER JOIN courses ON memberships.course=courses.id WHERE memberships.account=:account;");
 
         $query->bindParam(":account", $account);
         $account = $_REQUEST['account'];
@@ -29,7 +29,8 @@
         {
           array_push($results['memberships'], array(
             'id' => $dataset[$i]['id'],
-            'course' => $dataset[$i]['name'],
+            'course' => $dataset[$i]['course'],
+            'name' => $dataset[$i]['name'],
             'moderator' => $dataset[$i]['moderator']
           ));
         }

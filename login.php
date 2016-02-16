@@ -18,7 +18,7 @@
     $_SESSION['account'] = $session['account'];
     $_SESSION['token'] = $session['token'];
 
-    header('Location: index.php');
+    header('Location: courses.php');
   }
 
 ?>

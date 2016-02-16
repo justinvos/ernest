@@ -27,6 +27,10 @@
       <h1>ernest</h1>
     </div>
 
+    <div id='body_outer'>
+
+    </div>
+
   </body>
 
 
