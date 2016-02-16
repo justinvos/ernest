@@ -15,13 +15,26 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * An expansive API means that other applications can be easily integrated into ernest for even more functionality.
 
 ## Roadmap
-1. Be able to join a course. (February 2016)
-2. Be able to approve applications to join a course. (February 2016)
-3. Have an explanation to why a certain answer was correct. (March 2016)
-4. Be able to comment on questions. (March 2016)
-5. Get points allocated to users based on their activity. (March 2016)
-6. Be able to up-vote and down-vote questions on its quality. (March 2016)
-7. Be able to attach descriptive tags to questions. (April 2016)
+**February 2016** - Core functionality complete and an online trial website.
+**April 2016** - Tagging, searching and scoring complete with a public beta release.
+**May 2016** - Stable and well-documented public release.
+
+### Upcoming features
+* Email verification (CORE)
+* Password recovery (CORE)
+* Moderators (CORE)
+* Question deletion (CORE)
+* Question editing (CORE)
+* Course creation (CORE)
+* Applications to join a course (CORE)
+* Answer explanations (CORE)
+* Commenting
+* Scoring system
+* Up-voting and down-voting questions
+* Searchable tags for questions
+* Sortable listing of questions
+* Leaderboards
+* Achievements
 
 ## Config
 The config.json file contains all the configuration data for setting up your ernest instance. These variables are required to be set:
