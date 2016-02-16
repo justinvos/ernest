@@ -2,17 +2,33 @@
 
   session_start();
 
+  include('backend.php');
 
-  if(!isset($_REQUEST['course']))
+  if(!isset($_REQUEST['id']))
   {
     header('Location: error.php?error_msg=Could%20not%20find%20the%20course.');
   }
-  else
+  else if(isset($_SESSION['account']) && isset($_SESSION['token']))
   {
-    $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $course = json_decode(curl_exec($curl), true);
+    if(authenticate(connect(), $_SESSION['account'], $_SESSION['token']))
+    {
+      $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['id']);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $membership = json_decode(curl_exec($curl), true);
+
+      if($membership['member'])
+      {
+        $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['id']);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $questions = json_decode(curl_exec($curl), true);
+      }
+    }
   }
+
+  $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['id']);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  $course = json_decode(curl_exec($curl), true);
+
 ?>
 
 
@@ -39,9 +55,38 @@
     </div>
 
     <div id='body_outer'>
-      <h3>COURSE</h3>
-      <h2><?php echo $course['course']['name']; ?></h2>
-      <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
+      <h3><?php echo $course['course']['name']; ?></h3>
+
+
+      <?php
+        if(isset($questions))
+        {
+          echo '<h2>Questions</h2>';
+
+          for($i = 0; $i < sizeof($questions['questions']); $i++)
+          {
+            echo '<div class="row">';
+
+            echo '<a class="question_label" href="question.php?id=' . $questions['questions'][$i]['id'] . '">';
+
+            echo $questions['questions'][$i]['question'];
+
+            echo '</a>';
+
+            echo '</div>';
+          }
+        }
+        else
+        {
+          echo '<h2>Course Overview</h2>';
+          ?>
+            <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
+          <?php
+        }
+
+
+      ?>
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

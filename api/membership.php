@@ -1,6 +1,6 @@
 <?php
 
-  include('backend.php');
+  include('../backend.php');
 
   $results = array(
     'error' => false,

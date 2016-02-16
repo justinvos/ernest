@@ -1,7 +1,7 @@
 <?php
   function connect()
   {
-    $config = json_decode(file_get_contents('../config.json'), true);
+    $config = json_decode(file_get_contents('http://localhost/ernest/config.json'), true);
 
     $db = new PDO('mysql:host=' . $config['db_address'] . ';dbname=' . $config['db_name'] . ';charset=utf8', $config['db_username'], $config['db_password']);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -23,7 +23,7 @@
 
     if(sizeof($dataset) > 0)
     {
-      if($_REQUEST['token'] == $dataset[0]['token'])
+      if($token == $dataset[0]['token'])
       {
         if($dataset[0]['creation_time'] + (120 * 60) > $_SERVER['REQUEST_TIME'])
         {
@@ -31,12 +31,10 @@
         }
         else
         {
-          $query = $db->prepare("DELETE FROM sessions WHERE sessions.account=:account_id AND sessions.token=:token;");
+          $query = $db->prepare("DELETE FROM sessions WHERE sessions.account=:account AND sessions.token=:token;");
 
-          $query->bindParam(":account_id", $account_id);
-          $account_id = $_REQUEST['account_id'];
+          $query->bindParam(":account", $account);
           $query->bindParam(":token", $token);
-          $token = $_REQUEST['token'];
 
           $query->execute();
         }
