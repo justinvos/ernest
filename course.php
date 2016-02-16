@@ -10,7 +10,9 @@
   }
   else if(isset($_SESSION['account']) && isset($_SESSION['token']))
   {
-    if(authenticate(connect(), $_SESSION['account'], $_SESSION['token']))
+    $is_authenticated = authenticate(connect(), $_SESSION['account'], $_SESSION['token']);
+
+    if($is_authenticated)
     {
       $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['id']);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -79,9 +81,21 @@
         else
         {
           echo '<h2>Course Overview</h2>';
-          ?>
-            <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
-          <?php
+
+          if($is_authenticated)
+          {
+            ?>
+              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
+            <?php
+          }
+          else
+          {
+            ?>
+              <a class='rect' onclick='window.location = "login.php?go=" + window.location;'>Join</a>
+            <?php
+          }
+
+
         }
 
 

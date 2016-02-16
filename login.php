@@ -18,7 +18,14 @@
     $_SESSION['account'] = $session['account'];
     $_SESSION['token'] = $session['token'];
 
-    header('Location: courses.php');
+
+    if(isset($_REQUEST['go']))
+    {
+      header('Location: ' . $_REQUEST['go']);
+    }
+    else {
+      header('Location: courses.php');
+    }
   }
 
 ?>

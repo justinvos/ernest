@@ -5,6 +5,12 @@ var joinClick = function(account, token, course)
   $.ajax({
     data : {'account' : account, 'token' : token, 'course' : course, 'moderator' : 0},
     type: 'POST',
-    url: 'api/memberships.php'
+    url: 'api/memberships.php',
+    success: function()
+    {
+      location.reload();
+    }
   });
+
+
 };

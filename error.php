@@ -27,7 +27,39 @@
 
     <div id='body_outer'>
       <h2>Something happened, sorry.</h2>
-      <p><?php echo $_REQUEST['error_msg']; ?></p>
+
+      <?php
+
+        if(isset($_REQUEST['type']))
+        {
+          if($_REQUEST['type'] == 'nosession')
+          {
+            echo '<p>We could not find your session.</p>';
+            if(isset($_REQUEST['go']))
+            {
+              echo '<p>Try logging in again <a href="login.php?go=' . $_REQUEST['go'] . '">here</a></p>';
+            }
+            else
+            {
+              echo '<p>Try logging in again <a href="login.php">here</a></p>';
+            }
+
+          }
+          else
+          {
+            echo '<p>An unknown error has occured (' . $_REQUEST['type'] . ').</p>';
+            echo '<p>' . $_REQUEST['msg'] . '</p>';
+          }
+        }
+        else
+        {
+          echo '<p>An unknown error has occured.</p>';
+          echo '<p>' . $_REQUEST['msg'] . '</p>';
+        }
+
+      ?>
+
+
     </div>
 
   </body>
