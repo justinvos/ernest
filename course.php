@@ -85,7 +85,7 @@
           if($is_authenticated)
           {
             ?>
-              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
+              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
             <?php
           }
           else

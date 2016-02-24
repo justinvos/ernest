@@ -14,9 +14,9 @@
   {
     $db = connect();
 
-    $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account_id;");
+    $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account;");
 
-    $query->bindParam(":account_id", $account);
+    $query->bindParam(":account", $account);
 
     $query->execute();
     $dataset = $query->fetchAll();

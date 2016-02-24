@@ -64,7 +64,7 @@
 
       </ul>
 
-      <a id='submit_button' class='box' onclick='submitClick(<?php echo $_SESSION['account_id']; ?>,"<?php echo $_SESSION['token']; ?>")'>Submit</a>
+      <a id='submit_button' class='box' onclick='submitClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>")'>Submit</a>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -13,14 +13,6 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT sessions.token, sessions.creation_time FROM sessions WHERE sessions.account=:account_id;");
-
-      $query->bindParam(":account_id", $account_id);
-      $account_id = $_REQUEST['account'];
-
-      $query->execute();
-      $dataset = $query->fetchAll();
-
       if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
         $query = $db->prepare("INSERT INTO votes (account, answer, vote_time) VALUES (:account, :answer, :vote_time);");

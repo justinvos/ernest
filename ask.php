@@ -44,7 +44,7 @@
         <a id='answer_button' class='rect' onclick="anotherAnswerClick();">Add another answer</a>
 
 
-        <a id='ask_button' class='rect' onclick="askClick(<?php echo $_SESSION['account_id']; ?>,'<?php echo $_SESSION['token']; ?>', <?php echo $_GET['course']; ?>);">Ask</a>
+        <a id='ask_button' class='rect' onclick="askClick(<?php echo $_SESSION['account']; ?>,'<?php echo $_SESSION['token']; ?>', <?php echo $_GET['course']; ?>);">Ask</a>
       </form>
 
     </div>
