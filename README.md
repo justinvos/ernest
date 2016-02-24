@@ -15,8 +15,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * An expansive API means that other applications can be easily integrated into ernest for even more functionality.
 
 ## Roadmap
-**February 2016** - Core functionality complete and an online trial website.
-**April 2016** - Tagging, searching and scoring complete with a public beta release.
+**March 2016** - Core functionality complete and an online trial website.\n
+**April 2016** - Tagging, searching and scoring complete with a public beta release.\n
 **May 2016** - Stable and well-documented public release.
 
 ### Upcoming features
