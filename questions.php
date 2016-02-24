@@ -4,9 +4,9 @@
 
   include('backend.php');
 
-  if(!isset($_REQUEST['id']))
+  if(!isset($_REQUEST['course']))
   {
-    header('Location: error.php?error_msg=Could%20not%20find%20the%20course.');
+    header('Location: error.php?type=nocourse');
   }
   else if(isset($_SESSION['account']) && isset($_SESSION['token']))
   {
@@ -14,22 +14,30 @@
 
     if($is_authenticated)
     {
-      $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['id']);
+      $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['course']);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
       $membership = json_decode(curl_exec($curl), true);
 
       if($membership['member'])
       {
-        $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['id']);
+        $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $questions = json_decode(curl_exec($curl), true);
       }
     }
+
+
+    $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $course = json_decode(curl_exec($curl), true);
+
+    if($course['error'])
+    {
+      header('Location: error.php?type=nocourse');
+    }
   }
 
-  $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['id']);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  $course = json_decode(curl_exec($curl), true);
+
 
 ?>
 
@@ -85,7 +93,7 @@
           if($is_authenticated)
           {
             ?>
-              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", 1)'>Join</a>
+              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", <?php echo $_REQUEST['course']; ?>)'>Join</a>
             <?php
           }
           else

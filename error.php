@@ -44,10 +44,15 @@
               echo '<p>Try logging in again <a href="login.php">here</a></p>';
             }
           }
+          else if($_REQUEST['type'] == 'nocourse')
+          {
+            echo '<p>We could not find that course.</p>';
+            echo '<p>Click <a href="courses.php">here</a> to return to the courses page.</p>';
+          }
           else if($_REQUEST['type'] == 'noquestion')
           {
-            echo '<p>We could not find that question.</p>';
-            echo '<p>You might not be a member of the course you are trying to access.</p>';
+            echo '<p>We could not find that question.<br />';
+            echo 'You might not be a member of the course you are trying to access.</p>';
             echo '<p>Click <a href="courses.php">here</a> to return to the courses page.</p>';
           }
           else
