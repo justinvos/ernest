@@ -4,17 +4,26 @@
 
   if(!isset($_REQUEST['id']))
   {
-    header('Location: error.php?error_msg=Could%20not%20find%20the%20course.');
+    header('Location: error.php?type=noquestion');
   }
   else
   {
-    $curl = curl_init("localhost/ernest/api/question.php?id=" . $_REQUEST['id']);
+    $curl = curl_init("localhost/ernest/api/question.php?id=" . $_REQUEST['id'] . "&account=" .  $_SESSION['account'] . "&token=" . $_SESSION['token']);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     $question = json_decode(curl_exec($curl), true);
 
-    $curl = curl_init("localhost/ernest/api/answers.php?question=" . $_REQUEST['id']);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $answers = json_decode(curl_exec($curl), true);
+    if(!$question['error'])
+    {
+      $curl = curl_init("localhost/ernest/api/answers.php?question=" . $_REQUEST['id']);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $answers = json_decode(curl_exec($curl), true);
+    }
+    else
+    {
+      header('Location: error.php?type=noquestion');
+    }
+
+
   }
 ?>
 
