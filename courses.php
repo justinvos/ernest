@@ -42,7 +42,7 @@
           {
             echo '<div class="row">';
 
-            echo '<a class="question_label" href="questions.php?course=' . $memberships['memberships'][$i]['course'] . '">';
+            echo '<a class="question_label" href="course.php?id=' . $memberships['memberships'][$i]['course'] . '">';
 
             echo $memberships['memberships'][$i]['name'];
 

@@ -9,27 +9,47 @@
 
   if($_SERVER['REQUEST_METHOD'] == 'GET')
   {
-    if(isset($_REQUEST['course']))
+    if(isset($_REQUEST['account']) && isset($_REQUEST['token']) && isset($_REQUEST['course']))
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT questions.id, questions.question, questions.creation_time FROM questions WHERE questions.course=:course;");
-
-      $query->bindParam(":course", $course);
-      $course = $_REQUEST['course'];
-
-      $query->execute();
-      $dataset = $query->fetchAll();
-
-      $results['questions'] = array();
-
-      for($i = 0; $i < sizeof($dataset); $i++)
+      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        array_push($results['questions'], array(
-          'id' => $dataset[$i]['id'],
-          'question' => $dataset[$i]['question'],
-          'creation_time' => $dataset[$i]['creation_time']
-        ));
+        if(isset($_REQUEST['answered']) && $_REQUEST['answered'] == 1)
+        {
+          $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question INNER JOIN votes ON answers.id=votes.answer WHERE questions.course=:course AND votes.account=:account;");
+        }
+        else
+        {
+          $query = $db->prepare("SELECT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.course=1 AND (votes.account=1 OR votes.account IS NULL) GROUP BY questions.id HAVING COUNT(votes.id)=0;");
+        }
+
+        $query->bindParam(":course", $course);
+        $course = $_REQUEST['course'];
+
+        $query->bindParam(":account", $account);
+        $account = $_REQUEST['account'];
+
+        $query->execute();
+        $dataset = $query->fetchAll();
+
+        $results['questions'] = array();
+
+        for($i = 0; $i < sizeof($dataset); $i++)
+        {
+          array_push($results['questions'], array(
+            'id' => $dataset[$i]['id'],
+            'question' => $dataset[$i]['question'],
+            'creation_time' => $dataset[$i]['creation_time']
+          ));
+        }
+      }
+      else
+      {
+        http_response_code(401);
+
+        $results['error'] = true;
+        $results['error_msg'] = 'Not authenticated';
       }
     }
     else

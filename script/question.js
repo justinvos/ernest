@@ -35,10 +35,12 @@ var answerClick = function(answer_id)
 
 var submitClick = function(account, token)
 {
-
-  $.ajax({
-    data : {'account' : account, 'token' : token, 'answer' : answer},
-    type: 'POST',
-    url: 'api/votes.php'
-  });
+  if(answer)
+  {
+    $.ajax({
+      data : {'account' : account, 'token' : token, 'answer' : answer},
+      type: 'POST',
+      url: 'api/votes.php'
+    });
+  }
 };

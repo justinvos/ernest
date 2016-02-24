@@ -4,37 +4,45 @@
 
   include('backend.php');
 
-  if(!isset($_REQUEST['course']))
+  if(isset($_REQUEST['course']))
   {
-    header('Location: error.php?type=nocourse');
-  }
-  else if(isset($_SESSION['account']) && isset($_SESSION['token']))
-  {
-    $is_authenticated = authenticate(connect(), $_SESSION['account'], $_SESSION['token']);
-
-    if($is_authenticated)
+    if(isset($_SESSION['account']) && isset($_SESSION['token']))
     {
-      $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['course']);
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-      $membership = json_decode(curl_exec($curl), true);
-
-      if($membership['member'])
+      if(authenticate(connect(), $_SESSION['account'], $_SESSION['token']))
       {
-        $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course']);
+        $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['course']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $questions = json_decode(curl_exec($curl), true);
+        $membership = json_decode(curl_exec($curl), true);
+
+        if($membership['member'])
+        {
+          if(!isset($_REQUEST['answered']))
+          {
+            $_REQUEST['answered'] = 0;
+          }
+
+          $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course'] . "&account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&answered=" . $_REQUEST['answered']);
+          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+          $questions = json_decode(curl_exec($curl), true);
+
+          $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
+          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+          $course = json_decode(curl_exec($curl), true);
+        }
+        else
+        {
+          header('Location: course.php?id=' . $_REQUEST['course']);
+        }
+      }
+      else
+      {
+        header('Location: error.php?type=nosession');
       }
     }
-
-
-    $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    $course = json_decode(curl_exec($curl), true);
-
-    if($course['error'])
-    {
-      header('Location: error.php?type=nocourse');
-    }
+  }
+  else
+  {
+    header('Location: error.php?type=nocourse');
   }
 
 
