@@ -57,7 +57,7 @@
         array("label" => "Courses", "url" => "courses.php"),
         array("label" => $question['question']['course'], "url" => "course.php?id=" . $question['question']['course_id']),
         array("label" => $page_title, "url" => "questions.php?course=" . $question['question']['course_id'] . "&answered=" . $answered . "&owned=" . $owned),
-        array("label" => $question["question"]["question"])
+        array("label" => "This question")
       ));
     ?>
 

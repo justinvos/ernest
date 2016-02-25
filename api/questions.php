@@ -17,24 +17,30 @@
       {
         if(isset($_REQUEST['answered']) && $_REQUEST['answered'] == 1)
         {
-          $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question INNER JOIN votes ON answers.id=votes.answer WHERE questions.course=:course AND votes.account=:account;");
+          $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question INNER JOIN votes ON answers.id=votes.answer WHERE questions.course=:course AND votes.account=:account AND questions.account!=:account2;");
+          $params = array("course" => $_REQUEST["course"], "account" => $_REQUEST["account"], "account2" => $_REQUEST["account"]);
         }
         else if(isset($_REQUEST['owned']) && $_REQUEST['owned'] == 1)
         {
           $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions WHERE questions.course=:course AND questions.account=:account;");
+          $params = array("course" => $_REQUEST["course"], "account" => $_REQUEST["account"]);
         }
         else
         {
-          $query = $db->prepare("SELECT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.course=1 AND (votes.account=1 OR votes.account IS NULL) GROUP BY questions.id HAVING COUNT(votes.id)=0;");
+          $query = $db->prepare("SELECT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.course=:course AND (votes.account=:account OR votes.account IS NULL) AND questions.account!=:account2 GROUP BY questions.id HAVING COUNT(votes.id)=0;");
+          $params = array("course" => $_REQUEST["course"], "account" => $_REQUEST["account"], "account2" => $_REQUEST["account"]);
         }
 
-        $query->bindParam(":course", $course);
+
+
+        /*$query->bindParam(":course", $course);
         $course = $_REQUEST['course'];
 
         $query->bindParam(":account", $account);
         $account = $_REQUEST['account'];
+        */
 
-        $query->execute();
+        $query->execute($params);
         $dataset = $query->fetchAll();
 
         $results['questions'] = array();

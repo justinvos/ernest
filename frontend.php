@@ -54,17 +54,37 @@
     ?>
       <div id='bar_outer'>
         <div id='bar_inner'>
-          <ul id='breadcrumbs'>
+          <ul id='breadcrumbs_bar'>
             <?php
 
               for($i = 0; $i < (sizeof($levels) - 1); $i++)
               {
-                echo "<li><a href='" . $levels[$i]['url'] . "'>" . $levels[$i]['label'] . "</a></li>";
+                echo "<li><a href='" . $levels[$i]["url"] . "'>" . $levels[$i]["label"] . "</a></li>";
               }
-              echo "<li>" . $levels[$i]['label'] . "</li>";
+              echo "<li>" . $levels[$i]["label"] . "</li>";
 
             ?>
           </ul>
+
+    <?php
+      if(isset($_SESSION["account"]))
+      {
+        $curl = curl_init("localhost/ernest/api/account.php?id=" . $_SESSION['account'] . "&token=" . $_SESSION['token']);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $account = json_decode(curl_exec($curl), true);
+
+        ?>
+
+        <ul id='login_bar'>
+          <li><?php echo $account["account"]["email"]; ?></li><li><a href='logout.php'>Log out</a></li>
+        </ul>
+
+        <?php
+      }
+    ?>
+
+
+
         </div>
       </div>
     <?php

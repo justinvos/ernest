@@ -15,7 +15,7 @@
 
       if(authenticate($db, $_REQUEST['id'], $_REQUEST['token']))
       {
-        $query = $db->prepare("SELECT accounts.id, accounts.email, accounts.creation_time FROM accounts WHERE accounts.id=:id;");
+        $query = $db->prepare("SELECT accounts.id, accounts.email, accounts.creation_time FROM accounts WHERE accounts.id=:id LIMIT 1;");
 
         $query->bindParam(":id", $id);
         $id = $_REQUEST['id'];
