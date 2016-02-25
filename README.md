@@ -33,6 +33,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * Up-voting and down-voting questions
 * Searchable tags for questions
 * Sortable listing of questions
+* Question reporting
 * Leaderboards
 * Achievements
 
@@ -46,9 +47,9 @@ The config.json file contains all the configuration data for setting up your ern
 ### Example
 
 
-`{
-  "db_address":"localhost",
-  "db_name":"ernest",
-  "db_username":"username",
-  "db_password":"password123"
+`{  
+  "db_address":"localhost",  
+  "db_name":"ernest",  
+  "db_username":"username",  
+  "db_password":"password123"  
 }`

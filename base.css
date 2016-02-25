@@ -8,11 +8,21 @@ body
 
 a
 {
-  color: #3498db;
+  color: #444;
   text-decoration: none;
 }
 
 a:hover
+{
+  color: black;
+}
+
+p a
+{
+  color: #3498db;
+}
+
+p a:hover
 {
   color: #256C9B;
 }
@@ -27,7 +37,7 @@ div#header_inner
 {
   margin: auto;
   padding: 20px 60px;
-  width: 1400px;
+  width: 1200px;
 }
 
 h1, h2, h3
@@ -46,7 +56,7 @@ h1
 div#bar_inner
 {
   margin: auto;
-  width: 1400px;
+  width: 1200px;
 }
 
 ul#breadcrumbs_bar
@@ -94,6 +104,7 @@ ul#login_bar
 
 ul#login_bar li
 {
+  color: #444;
   display: inline-block;
   margin: 0 20px;
 }
@@ -107,7 +118,7 @@ div#body_inner
 {
   margin: auto;
   padding-top: 5px;
-  width: 1400px;
+  width: 1200px;
 }
 
 h3
