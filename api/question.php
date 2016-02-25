@@ -15,7 +15,7 @@
 
       if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
       {
-        $query = $db->prepare("SELECT questions.id,courses.name AS `course`,questions.account,questions.question,questions.creation_time, COUNT(votes.id) > 0 AS `answered` FROM questions INNER JOIN courses ON questions.course=courses.id INNER JOIN memberships ON questions.course=memberships.course INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.id=:id AND (votes.account=:account OR votes.account IS NULL) GROUP BY questions.id LIMIT 1;");
+        $query = $db->prepare("SELECT questions.id,courses.id AS `course_id`, courses.name AS `course`,questions.account,questions.question,questions.creation_time, COUNT(votes.id) > 0 AS `answered` FROM questions INNER JOIN courses ON questions.course=courses.id INNER JOIN memberships ON questions.course=memberships.course INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.id=:id AND (votes.account=:account OR votes.account IS NULL) GROUP BY questions.id LIMIT 1;");
 
         $query->bindParam(":id", $id);
         $id = $_REQUEST['id'];
@@ -30,6 +30,7 @@
         {
           $results['question'] = array(
             'id' => $dataset[0]['id'],
+            'course_id' => $dataset[0]['course_id'],
             'course' => $dataset[0]['course'],
             'account' => $dataset[0]['account'],
             'question' => $dataset[0]['question'],

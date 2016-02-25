@@ -35,42 +35,49 @@
 
 <html>
 
-  <?php print_head($course['course']['name']); ?>
+  <?php print_head($course["course"]["name"]); ?>
 
   <body>
 
-    <?php print_header(); ?>
+    <?php
+      print_header();
+
+      print_bar(array(array("label" => "Courses", "url" => "courses.php"), array("label" => $course["course"]["name"])));
+    ?>
+
+
 
     <div id='body_outer'>
-      <h3><?php echo $course['course']['name']; ?></h3>
+      <div id='body_inner'>
+        <h3><?php echo $course['course']['name']; ?></h3>
 
 
-      <?php
+        <?php
 
-        if($is_authenticated)
-        {
-          if($membership['member'])
+          if($is_authenticated)
           {
-            echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&owned=1">Your questions</a></p>';
-            echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '">Unanswered questions</a></p>';
-            echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&answered=1">Answered questions</a></p>';
-            echo '<a href="ask.php?course=' . $_REQUEST['id'] . '" class="rect">Ask a question</a>';
+            if($membership['member'])
+            {
+              echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&owned=1">Your questions</a></p>';
+              echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '">Unanswered questions</a></p>';
+              echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&answered=1">Answered questions</a></p>';
+              echo '<a href="ask.php?course=' . $_REQUEST['id'] . '" class="rect">Ask a question</a>';
+            }
+            else
+            {
+              ?>
+                <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", <?php echo $_REQUEST['course']; ?>)'>Join</a>
+              <?php
+            }
           }
           else
           {
             ?>
-              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", <?php echo $_REQUEST['course']; ?>)'>Join</a>
+              <a class='rect' onclick='window.location = "login.php?go=" + window.location;'>Join</a>
             <?php
           }
-        }
-        else
-        {
-          ?>
-            <a class='rect' onclick='window.location = "login.php?go=" + window.location;'>Join</a>
-          <?php
-        }
-      ?>
-
+        ?>
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

@@ -10,8 +10,13 @@ div#header_outer
 {
   background: #2ECC71;
   box-sizing: border-box;
+}
+
+div#header_inner
+{
+  margin: auto;
   padding: 20px 60px;
-  width: 100%;
+  width: 1400px;
 }
 
 h1, h2, h3
@@ -27,14 +32,54 @@ h1
   font-size: 48px;
 }
 
+div#bar_inner
+{
+  margin: auto;
+  width: 1400px;
+}
+
+ul#breadcrumbs
+{
+  display: inline-block;
+}
+
+ul#breadcrumbs li
+{
+  display: inline-block;
+}
+
+ul#breadcrumbs li::after
+{
+  content: ">";
+  margin: 0 15px;
+}
+
+ul#breadcrumbs li:last-child::after
+{
+  content: none;
+}
+
+ul#breadcrumbs li a
+{
+  color: #444;
+  text-decoration: none;
+}
+
+ul#breadcrumbs li a:hover
+{
+  color: black;
+}
 
 div#body_outer
 {
   box-sizing: border-box;
-  padding: 20px 60px;
-  width: 100%;
 }
 
+div#body_inner
+{
+  margin: auto;
+  width: 1400px;
+}
 
 h3
 {

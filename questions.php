@@ -42,6 +42,16 @@
     header('Location: error.php?type=nocourse');
   }
 
+  $page_title = "Unanswered questions";
+
+  if($_REQUEST["owned"] == 1)
+  {
+    $page_title = "Your questions";
+  }
+  else if($_REQUEST["answered"] == 1)
+  {
+    $page_title = "Answered questions";
+  }
 
 
 ?>
@@ -49,57 +59,66 @@
 
 <html>
 
-  <?php print_head("Questions"); ?>
+  <?php print_head($page_title); ?>
 
   <body>
 
-    <?php print_header(); ?>
+    <?php
+      print_header();
+
+      print_bar(array(
+        array("label" => "Courses", "url" => "courses.php"),
+        array("label" => $course["course"]["name"], "url" => "course.php?id=" . $course["course"]["id"]),
+        array("label" => $page_title)
+      ));
+    ?>
 
     <div id='body_outer'>
-      <h3><?php echo $course['course']['name']; ?></h3>
+      <div id='body_inner'>
+        <h3><?php echo $course['course']['name']; ?></h3>
 
 
-      <?php
-        if(isset($questions))
-        {
-          echo '<h2>Questions</h2>';
-
-          for($i = 0; $i < sizeof($questions['questions']); $i++)
+        <?php
+          if(isset($questions))
           {
-            echo '<div class="row">';
+            echo "<h2>" . $page_title . "</h2>";
 
-            echo '<a class="question_label" href="question.php?id=' . $questions['questions'][$i]['id'] . '">';
+            for($i = 0; $i < sizeof($questions['questions']); $i++)
+            {
+              echo '<div class="row">';
 
-            echo $questions['questions'][$i]['question'];
+              echo '<a class="question_label" href="question.php?id=' . $questions['questions'][$i]['id'] . '">';
 
-            echo '</a>';
+              echo $questions['questions'][$i]['question'];
 
-            echo '</div>';
-          }
-        }
-        else
-        {
-          echo '<h2>Course Overview</h2>';
+              echo '</a>';
 
-          if($is_authenticated)
-          {
-            ?>
-              <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", <?php echo $_REQUEST['course']; ?>)'>Join</a>
-            <?php
+              echo '</div>';
+            }
           }
           else
           {
-            ?>
-              <a class='rect' onclick='window.location = "login.php?go=" + window.location;'>Join</a>
-            <?php
+            echo '<h2>Course Overview</h2>';
+
+            if($is_authenticated)
+            {
+              ?>
+                <a class='rect' onclick='joinClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>", <?php echo $_REQUEST['course']; ?>)'>Join</a>
+              <?php
+            }
+            else
+            {
+              ?>
+                <a class='rect' onclick='window.location = "login.php?go=" + window.location;'>Join</a>
+              <?php
+            }
+
+
           }
 
 
-        }
-
-
-      ?>
-
+        ?>
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

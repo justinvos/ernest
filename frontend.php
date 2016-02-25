@@ -13,6 +13,8 @@
     {
       header('Location: error.php?type=nosession');
     }
+
+    return true;
   }
 
   function print_head($page_title)
@@ -40,7 +42,30 @@
   {
     ?>
       <div id='header_outer'>
-        <h1>ernest</h1>
+        <div id='header_inner'>
+          <h1>ernest</h1>
+        </div>
+      </div>
+    <?php
+  }
+
+  function print_bar($levels)
+  {
+    ?>
+      <div id='bar_outer'>
+        <div id='bar_inner'>
+          <ul id='breadcrumbs'>
+            <?php
+
+              for($i = 0; $i < (sizeof($levels) - 1); $i++)
+              {
+                echo "<li><a href='" . $levels[$i]['url'] . "'>" . $levels[$i]['label'] . "</a></li>";
+              }
+              echo "<li>" . $levels[$i]['label'] . "</li>";
+
+            ?>
+          </ul>
+        </div>
       </div>
     <?php
   }

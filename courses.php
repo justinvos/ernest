@@ -18,30 +18,36 @@
 
   <body>
 
-    <?php print_header(); ?>
+    <?php
+      print_header();
+
+      print_bar(array(array("label" => "Courses")));
+    ?>
 
     <div id='body_outer'>
-      <?php
+      <div id='body_inner'>
+        <?php
 
-        if(isset($memberships))
-        {
-          echo '<h2>Your Courses</h2>';
-
-          for($i = 0; $i < sizeof($memberships['memberships']); $i++)
+          if(isset($memberships))
           {
-            echo '<div class="row">';
+            echo '<h2>Your Courses</h2>';
 
-            echo '<a class="question_label" href="course.php?id=' . $memberships['memberships'][$i]['course'] . '">';
+            for($i = 0; $i < sizeof($memberships['memberships']); $i++)
+            {
+              echo '<div class="row">';
 
-            echo $memberships['memberships'][$i]['name'];
+              echo '<a class="question_label" href="course.php?id=' . $memberships['memberships'][$i]['course'] . '">';
 
-            echo '</a>';
+              echo $memberships['memberships'][$i]['name'];
 
-            echo '</div>';
+              echo '</a>';
+
+              echo '</div>';
+            }
           }
-        }
 
-      ?>
+        ?>
+      </div>
     </div>
 
   </body>

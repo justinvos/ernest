@@ -42,16 +42,17 @@
     <?php print_header(); ?>
 
     <div id='body_outer'>
-      <h2>Login</h2>
+      <div id='body_inner'>
+        <h2>Login</h2>
 
-      <form action='' method='POST'>
-        <input name='email' type='email' placeholder='Email'>
+        <form action='' method='POST'>
+          <input name='email' type='email' placeholder='Email'>
 
-        <input name='password' type='password' placeholder='Password'>
+          <input name='password' type='password' placeholder='Password'>
 
-        <input type='submit' id='submit_button' class='box' value='Login'>
-      </form>
-
+          <input type='submit' id='submit_button' class='box' value='Login'>
+        </form>
+      </div>
     </div>
   </body>
 
