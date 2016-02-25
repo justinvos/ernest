@@ -13,7 +13,7 @@
     {
       $db = connect();
 
-      $query = $db->prepare("SELECT answers.id,answers.question,answers.answer,COUNT(votes.id) AS `count` FROM answers LEFT JOIN votes ON answers.id=votes.answer WHERE answers.question=:question GROUP BY answers.id;");
+      $query = $db->prepare("SELECT answers.id,answers.question,answers.answer,answers.correct,COUNT(votes.id) AS `count` FROM answers LEFT JOIN votes ON answers.id=votes.answer WHERE answers.question=:question GROUP BY answers.id;");
 
       $query->bindParam(":question", $question);
       $question = $_REQUEST['question'];
@@ -29,6 +29,7 @@
           'id' => $dataset[$i]['id'],
           'question' => $dataset[$i]['question'],
           'answer' => $dataset[$i]['answer'],
+          'correct' => $dataset[$i]['correct'],
           'count' => $dataset[$i]['count']
         ));
       }

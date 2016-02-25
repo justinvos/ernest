@@ -90,6 +90,11 @@ li.box
   color: black;
 }
 
+.answer.correct
+{
+  color: #2ECC71;
+}
+
 .rect
 {
   background: #666;

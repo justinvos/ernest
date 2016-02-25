@@ -51,20 +51,57 @@
 
     <div id='body_outer'>
       <h3><?php echo $question['question']['course']; ?></h3>
-      <h2><?php echo $question['question']['question']; ?></h2>
-      <ul>
-        <?php
+
+
+
+
+      <?php
+
+        if($question['question']['account'] == $_SESSION['account'])
+        {
+          echo "<input type='text' placeholder='What question do you want to ask?' value='" . $question['question']['question'] . "'>";
+
+          echo "<a class='box rect' onclick='saveClick(" . $_SESSION['account'] . "," . $_SESSION['token'] . ")'>Save</a>";
+        }
+        else if($question['question']['answered'] == 1)
+        {
+          echo "<h2>" . $question['question']['question'] . "</h2>";
+
+          echo "<ul>";
+
+          for($i = 0; $i < sizeof($answers['answers']); $i++)
+          {
+            $classes = "answer box";
+
+            if($answers['answers'][$i]['correct'])
+            {
+              $classes .= " correct";
+            }
+
+            echo "<li id='answer_" . $answers['answers'][$i]['id'] . "' class='" . $classes . "'> " . $answers['answers'][$i]['answer'] . "</li>\n";
+          }
+
+          echo "</ul>";
+        }
+        else
+        {
+          echo "<h2>" . $question['question']['question'] . "</h2>";
+          echo "<ul>";
 
           for($i = 0; $i < sizeof($answers['answers']); $i++)
           {
             echo "<li id='answer_" . $answers['answers'][$i]['id'] . "' class='answer box' onclick='answerClick(" . $answers['answers'][$i]['id'] . ");'>" . $answers['answers'][$i]['answer'] . "</li>\n";
           }
 
-        ?>
+          echo "</ul>";
 
-      </ul>
+          echo "<a id='submit_button' class='box' onclick='submitClick(" . $_SESSION['account'] . "," . $_SESSION['token'] . ")'>Submit</a>";
+        }
+      ?>
 
-      <a id='submit_button' class='box' onclick='submitClick(<?php echo $_SESSION['account']; ?>,"<?php echo $_SESSION['token']; ?>")'>Submit</a>
+
+
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
