@@ -52,6 +52,22 @@
 
           <input type='submit' id='submit_button' class='box' value='Login'>
         </form>
+
+        <?php
+
+          if(isset($_REQUEST['go']))
+          {
+            echo "<p><a href='forgot.php?go=" . $_REQUEST['go'] . "'>Forgot your password?</a></p>";
+            echo "<p><a href='register.php?go=" . $_REQUEST['go'] . "'>Register an account</a></p>";
+          }
+          else
+          {
+            echo "<p><a href='forgot.php'>Forgot your password?</a></p>";
+            echo "<p><a href='register.php'>Register an account</a></p>";
+          }
+
+        ?>
+
       </div>
     </div>
   </body>

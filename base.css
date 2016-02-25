@@ -6,6 +6,17 @@ body
   padding: 0;
 }
 
+a
+{
+  color: #3498db;
+  text-decoration: none;
+}
+
+a:hover
+{
+  color: #256C9B;
+}
+
 div#header_outer
 {
   background: #2ECC71;
@@ -41,6 +52,8 @@ div#bar_inner
 ul#breadcrumbs
 {
   display: inline-block;
+  margin: 0;
+  padding: 20px 0;
 }
 
 ul#breadcrumbs li
@@ -50,6 +63,7 @@ ul#breadcrumbs li
 
 ul#breadcrumbs li::after
 {
+  color: #444;
   content: ">";
   margin: 0 15px;
 }
@@ -78,6 +92,7 @@ div#body_outer
 div#body_inner
 {
   margin: auto;
+  padding-top: 5px;
   width: 1400px;
 }
 
@@ -159,6 +174,7 @@ li.box
 
 .rect:hover
 {
+  color: white;
   background: #555;
 }
 

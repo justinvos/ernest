@@ -15,7 +15,14 @@
     curl_setopt($curl,CURLOPT_POSTFIELDS, $params);
     curl_exec($curl);
 
-    header('Location: index.php');
+    if(isset($_REQUEST['go']))
+    {
+      header('Location: login.php?go=' . $_REQUEST['go']);
+    }
+    else
+    {
+      header('Location: login.php');
+    }
   }
 
 ?>
