@@ -21,7 +21,12 @@
             $_REQUEST['answered'] = 0;
           }
 
-          $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course'] . "&account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&answered=" . $_REQUEST['answered']);
+          if(!isset($_REQUEST['owned']))
+          {
+            $_REQUEST['owned'] = 0;
+          }
+
+          $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course'] . "&account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&answered=" . $_REQUEST['answered'] . "&owned=" . $_REQUEST['owned']);
           curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
           $questions = json_decode(curl_exec($curl), true);
 

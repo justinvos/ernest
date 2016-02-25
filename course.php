@@ -65,7 +65,7 @@
         {
           if($membership['member'])
           {
-            echo '<p><a>Your questions</a></p>';
+            echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&owned=1">Your questions</a></p>';
             echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '">Unanswered questions</a></p>';
             echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&answered=1">Answered questions</a></p>';
           }

@@ -19,6 +19,10 @@
         {
           $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question INNER JOIN votes ON answers.id=votes.answer WHERE questions.course=:course AND votes.account=:account;");
         }
+        else if(isset($_REQUEST['owned']) && $_REQUEST['owned'] == 1)
+        {
+          $query = $db->prepare("SELECT DISTINCT questions.id, questions.question, questions.creation_time FROM questions WHERE questions.course=:course AND questions.account=:account;");
+        }
         else
         {
           $query = $db->prepare("SELECT questions.id, questions.question, questions.creation_time FROM questions INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.course=1 AND (votes.account=1 OR votes.account IS NULL) GROUP BY questions.id HAVING COUNT(votes.id)=0;");
