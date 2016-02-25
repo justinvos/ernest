@@ -1,48 +1,40 @@
 <?php
 
-  session_start();
+  include('frontend.php');
 
-  include('backend.php');
+  session_start();
+  validate_session();
+
 
   if(isset($_REQUEST['course']))
   {
-    if(isset($_SESSION['account']) && isset($_SESSION['token']))
+    $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['course']);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $membership = json_decode(curl_exec($curl), true);
+
+    if($membership['member'])
     {
-      if(authenticate(connect(), $_SESSION['account'], $_SESSION['token']))
+      if(!isset($_REQUEST['answered']))
       {
-        $curl = curl_init("localhost/ernest/api/membership.php?account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&course=" . $_REQUEST['course']);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $membership = json_decode(curl_exec($curl), true);
-
-        if($membership['member'])
-        {
-          if(!isset($_REQUEST['answered']))
-          {
-            $_REQUEST['answered'] = 0;
-          }
-
-          if(!isset($_REQUEST['owned']))
-          {
-            $_REQUEST['owned'] = 0;
-          }
-
-          $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course'] . "&account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&answered=" . $_REQUEST['answered'] . "&owned=" . $_REQUEST['owned']);
-          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-          $questions = json_decode(curl_exec($curl), true);
-
-          $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
-          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-          $course = json_decode(curl_exec($curl), true);
-        }
-        else
-        {
-          header('Location: course.php?id=' . $_REQUEST['course']);
-        }
+        $_REQUEST['answered'] = 0;
       }
-      else
+
+      if(!isset($_REQUEST['owned']))
       {
-        header('Location: error.php?type=nosession');
+        $_REQUEST['owned'] = 0;
       }
+
+      $curl = curl_init("localhost/ernest/api/questions.php?course=" . $_REQUEST['course'] . "&account=" . $_SESSION['account'] . "&token=" . $_SESSION['token'] . "&answered=" . $_REQUEST['answered'] . "&owned=" . $_REQUEST['owned']);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $questions = json_decode(curl_exec($curl), true);
+
+      $curl = curl_init("localhost/ernest/api/course.php?id=" . $_REQUEST['course']);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      $course = json_decode(curl_exec($curl), true);
+    }
+    else
+    {
+      header('Location: course.php?id=' . $_REQUEST['course']);
     }
   }
   else
@@ -57,25 +49,11 @@
 
 <html>
 
-  <head>
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta content="utf-8" http-equiv="encoding">
-
-    <title>ernest</title>
-
-    <link rel="shortcut icon" href="e.ico">
-
-
-    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link rel='stylesheet' href='base.css'>
-
-  </head>
+  <?php print_head("Questions"); ?>
 
   <body>
 
-    <div id='header_outer'>
-      <h1>ernest</h1>
-    </div>
+    <?php print_header(); ?>
 
     <div id='body_outer'>
       <h3><?php echo $course['course']['name']; ?></h3>
