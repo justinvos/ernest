@@ -68,6 +68,7 @@
             echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&owned=1">Your questions</a></p>';
             echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '">Unanswered questions</a></p>';
             echo '<p><a href="questions.php?course=' . $_REQUEST['id'] . '&answered=1">Answered questions</a></p>';
+            echo '<a href="ask.php?course=' . $_REQUEST['id'] . '" class="rect">Ask a question</a>';
           }
           else
           {
