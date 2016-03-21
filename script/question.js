@@ -44,3 +44,22 @@ var submitClick = function(account, token)
     });
   }
 };
+
+
+var saveClick = function(account, token)
+{
+  $.ajax({
+    data : {"account" : account, "token" : token, "id" : document.getElementById("question_id").innerHTML, "question" : document.getElementById("question_label").value},
+    type: "PUT",
+    url: "api/question.php"
+  });
+};
+
+var deleteClick = function(account, token)
+{
+  $.ajax({
+    data : {"account" : account, "token" : token, "id" : document.getElementById("question_id").innerHTML},
+    type: "DELETE",
+    url: "api/question.php"
+  });
+};

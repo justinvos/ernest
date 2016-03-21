@@ -72,9 +72,23 @@
 
           if($question['question']['account'] == $_SESSION['account'])
           {
-            echo "<input type='text' placeholder='What question do you want to ask?' value='" . $question['question']['question'] . "'>";
+            echo "<div id='question_id' class='hidden'>" . $question['question']['id'] . "</div>";
+            echo "<input type='text' id='question_label' class='full_width minimal' placeholder='What question do you want to ask?' value='" . $question['question']['question'] . "'>";
 
-            echo "<a class='box rect' onclick='saveClick(" . $_SESSION['account'] . "," . $_SESSION['token'] . ")'>Save</a>";
+            for($i = 0; $i < sizeof($answers['answers']); $i++)
+            {
+              $classes = "answer box full_width";
+
+              if($answers['answers'][$i]['correct'])
+              {
+                $classes .= " correct";
+              }
+
+              echo "<input id='answer_" . $answers['answers'][$i]['id'] . "' type='text' class='" . $classes . "' value='" . $answers['answers'][$i]['answer'] . "' />\n";
+            }
+
+            echo "<a class='box rect' onclick='saveClick(" . $_SESSION['account'] . ",\"" . $_SESSION['token'] . "\")'>Save</a>";
+            echo "<a class='box rect danger' onclick='deleteClick(" . $_SESSION['account'] . ",\"" . $_SESSION['token'] . "\")'>Delete</a>";
           }
           else if($question['question']['answered'] == 1)
           {

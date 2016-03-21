@@ -55,6 +55,50 @@
       $results['error_msg'] = 'Missing paramater(s)';
     }
   }
+  else if($_SERVER['REQUEST_METHOD'] == "PUT")
+  {
+    parse_str(file_get_contents('php://input'), $_ARGS);
+
+
+      if(isset($_ARGS['id']) && isset($_ARGS['question']) && isset($_ARGS['account']) && isset($_ARGS['token']))
+      {
+        $db = connect();
+
+        if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
+        {
+          $query = $db->prepare("UPDATE questions SET question=:question WHERE id=:id;");
+
+          $id = $_ARGS['id'];
+          $question = $_ARGS['question'];
+
+          $query->bindParam(":id", $id);
+          $query->bindParam(":question", $question);
+
+          $query->execute();
+        }
+      }
+  }
+  else if($_SERVER['REQUEST_METHOD'] == "DELETE")
+  {
+    parse_str(file_get_contents('php://input'), $_ARGS);
+
+
+    if(isset($_ARGS['id']) && isset($_ARGS['account']) && isset($_ARGS['token']))
+    {
+      $db = connect();
+
+      if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
+      {
+        $query = $db->prepare("DELETE FROM questions WHERE id=:id;");
+
+        $id = $_ARGS['id'];
+
+        $query->bindParam(":id", $id);
+
+        $query->execute();
+      }
+    }
+  }
   else
   {
     http_response_code(400);
