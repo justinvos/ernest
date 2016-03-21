@@ -31,6 +31,8 @@
 
 
       <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+      <link rel='stylesheet' href='layout.css'>
       <link rel='stylesheet' href='base.css'>
 
     </head>
@@ -67,7 +69,7 @@
           </ul>
 
     <?php
-      if(isset($_SESSION["account"]))
+      if(isset($_SESSION["account"]) && authenticate(connect(), $_SESSION['account'], $_SESSION['token']))
       {
         $curl = curl_init("localhost/ernest/api/account.php?id=" . $_SESSION['account'] . "&token=" . $_SESSION['token']);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -79,6 +81,14 @@
           <li><?php echo $account["account"]["email"]; ?></li><li><a href='logout.php'>Log out</a></li>
         </ul>
 
+        <?php
+      }
+      else
+      {
+        ?>
+        <ul id='login_bar'>
+          <li><a href='login.php'>Log in</a></li><li><a href='register.php'>Register</a></li>
+        </ul>
         <?php
       }
     ?>
