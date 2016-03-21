@@ -20,14 +20,14 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 **May 2016** - Stable and well-documented public release.
 
 ### Upcoming features
-* Email verification (CORE)
-* Password recovery (CORE)
-* Moderators (CORE)
 * Question deletion (CORE)
 * Question editing (CORE)
 * Course creation (CORE)
-* Applications to join a course (CORE)
 * Answer explanations (CORE)
+* Password recovery (CORE)
+* Email verification (CORE)
+* Moderators (CORE)
+* Applications to join a course (CORE)
 * Commenting
 * Scoring system
 * Up-voting and down-voting questions
