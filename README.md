@@ -20,8 +20,8 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 **May 2016** - Stable and well-documented public release.
 
 ### Upcoming features
-* Question deletion (CORE)
-* Question editing (CORE)
+* Answer deletion (CORE)
+* Correct answer selection (CORE)
 * Course creation (CORE)
 * Answer explanations (CORE)
 * Password recovery (CORE)
