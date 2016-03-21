@@ -53,6 +53,17 @@ var saveClick = function(account, token)
     type: "PUT",
     url: "api/question.php"
   });
+
+  var answer_elements = document.getElementsByClassName('answer');
+
+  for(i = 0; i < answer_elements.length; i++)
+  {
+    $.ajax({
+      data : {"account" : account, "token" : token, "id" : answer_elements[i].id.substring(7, answer_elements[i].id.length), "answer" : answer_elements[i].value},
+      type: "PUT",
+      url: "api/answer.php"
+    });
+  }
 };
 
 var deleteClick = function(account, token)

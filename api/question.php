@@ -60,23 +60,23 @@
     parse_str(file_get_contents('php://input'), $_ARGS);
 
 
-      if(isset($_ARGS['id']) && isset($_ARGS['question']) && isset($_ARGS['account']) && isset($_ARGS['token']))
+    if(isset($_ARGS['id']) && isset($_ARGS['question']) && isset($_ARGS['account']) && isset($_ARGS['token']))
+    {
+      $db = connect();
+
+      if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
       {
-        $db = connect();
+        $query = $db->prepare("UPDATE questions SET question=:question WHERE id=:id;");
 
-        if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
-        {
-          $query = $db->prepare("UPDATE questions SET question=:question WHERE id=:id;");
+        $id = $_ARGS['id'];
+        $question = $_ARGS['question'];
 
-          $id = $_ARGS['id'];
-          $question = $_ARGS['question'];
+        $query->bindParam(":id", $id);
+        $query->bindParam(":question", $question);
 
-          $query->bindParam(":id", $id);
-          $query->bindParam(":question", $question);
-
-          $query->execute();
-        }
+        $query->execute();
       }
+    }
   }
   else if($_SERVER['REQUEST_METHOD'] == "DELETE")
   {
@@ -104,7 +104,7 @@
     http_response_code(400);
 
     $results['error'] = true;
-    $results['error_msg'] = 'The resource being accessed only accepts GET requests';
+    $results['error_msg'] = 'The resource being accessed only accepts GET, PUT and DELETE requests';
   }
 
   echo json_encode($results);
