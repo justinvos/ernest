@@ -15,25 +15,32 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * An expansive API means that other applications can be easily integrated into ernest for even more functionality.
 
 ## Roadmap
-**March 2016** - Core functionality complete and an online trial website.  
-**April 2016** - Tagging, searching and scoring complete with a public beta release.  
-**May 2016** - Stable and well-documented public release.
+**July 2016** - Core functionality complete and an online trial website.  
+**August 2016** - Supporting functionality complete.  
+**September 2016** - Tagging, searching and scoring complete.  
+**October 2016** - Stable and beta release.
 
 ### Upcoming features
-* Answer deletion (CORE)
-* Correct answer selection (CORE)
-* Course creation (CORE)
-* Answer explanations (CORE)
-* Password recovery (CORE)
-* Email verification (CORE)
-* Moderators (CORE)
-* Applications to join a course (CORE)
-* Commenting
+#### CORE
+* Answer creation
+* Answer deletion
+* Answer editing
+* Correct answer selection
+* Account registration
+* Login
+#### SUPPORTING
+* Course creation
+* Answer explanations
+* Password recovery
+* Email verification
+#### EXTRA
 * Scoring system
 * Up-voting and down-voting questions
 * Searchable tags for questions
+* Moderators
+* Applications to join a course
+* Commenting
 * Sortable listing of questions
-* Question reporting
 * Leaderboards
 * Achievements
 
@@ -47,9 +54,11 @@ The config.json file contains all the configuration data for setting up your ern
 ### Example
 
 
-`{  
+```
+{  
   "db_address":"localhost",  
   "db_name":"ernest",  
   "db_username":"username",  
   "db_password":"password123"  
-}`
+}
+```
