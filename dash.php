@@ -2,7 +2,6 @@
   include("frontend.php");
 ?>
 
-
 <html>
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -10,22 +9,25 @@
     <title>ernest</title>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,300' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='css/base.css'>
-    <link rel='stylesheet' href='css/question.css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   </head>
   <body>
-    <span id='question_arg' class='arg'><?php echo $_GET['id']; ?></span>
-    <span id='mode_arg' class='arg'><?php echo $_GET['mode']; ?></span>
     <?php
       printHeader();
     ?>
     <div id='body_wrap'>
-      <h2 id='question_title'></h2>
-      <ul id='answer_list'>
-
+      <ul id='options_list'>
+        <li id='unanswered_link'>Unanswered questions</li>
+        <li id='answered_link'>Answered questions</li>
+        <li id='owned_link'>Your questions</li>
+        <li id='createQuestion_link' class='bubble'>Create a question</li>
       </ul>
-
+      <h2 id='page_heading'>Unanswered questions</h2>
+      <ul id='question_list'>
+      </ul>
     </div>
-    <script src='js/question.js'></script>
+    <script src='js/dash.js'></script>
+
+    </sc>
   </body>
 </html>

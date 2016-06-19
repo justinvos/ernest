@@ -1,76 +1,29 @@
 <?php
-
   include("frontend.php");
-
-  if(isset($_REQUEST['email']) && isset($_REQUEST['password']))
-  {
-    $params = array(
-      'email' => $_REQUEST['email'],
-      'password' => $_REQUEST['password']
-    );
-
-    $curl = curl_init("localhost/ernest/api/session.php");
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl,CURLOPT_POST, sizeof($params));
-    curl_setopt($curl,CURLOPT_POSTFIELDS, $params);
-    $session = json_decode(curl_exec($curl), true);
-
-    session_start();
-
-    $_SESSION['account'] = $session['account'];
-    $_SESSION['token'] = $session['token'];
-
-
-    if(isset($_REQUEST['go']))
-    {
-      header('Location: ' . $_REQUEST['go']);
-    }
-    else {
-      header('Location: courses.php');
-    }
-  }
-
 ?>
 
 
 <html>
-
-  <?php print_head("Login"); ?>
-
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>ernest</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,300' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='css/base.css'>
+    <link rel='stylesheet' href='css/login.css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  </head>
   <body>
+    <?php
+      printHeader();
+    ?>
+    <div id='body_wrap'>
+      <h2>Login</h2>
+      <input type='email' placeholder='Email' required>
+      <input type='password' placeholder='Password' required>
+      <a id='login_button' class='button'>Login</a>
 
-    <?php print_header(); ?>
-
-    <div id='body_outer'>
-      <div id='body_inner'>
-        <h2>Login</h2>
-
-        <form action='' method='POST'>
-          <input name='email' type='email' placeholder='Email'>
-
-          <input name='password' type='password' placeholder='Password'>
-
-          <input type='submit' id='submit_button' class='box' value='Login'>
-        </form>
-
-        <?php
-
-          if(isset($_REQUEST['go']))
-          {
-            echo "<p><a href='forgot.php?go=" . $_REQUEST['go'] . "'>Forgot your password?</a></p>";
-            echo "<p><a href='register.php?go=" . $_REQUEST['go'] . "'>Register an account</a></p>";
-          }
-          else
-          {
-            echo "<p><a href='forgot.php'>Forgot your password?</a></p>";
-            echo "<p><a href='register.php'>Register an account</a></p>";
-          }
-
-        ?>
-
-      </div>
     </div>
+    <script src='js/login.js'></script>
   </body>
-
-
 </html>

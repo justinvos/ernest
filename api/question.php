@@ -1,113 +1,102 @@
 <?php
-
   include('../backend.php');
-
-  $results = array(
+  $output = array(
     'error' => false,
-    'error_msg' => ''
+    'status_code' => 'OK'
   );
-
-  if($_SERVER['REQUEST_METHOD'] == 'GET')
-  {
-    if(isset($_REQUEST['id']) && isset($_REQUEST['account']) && isset($_REQUEST['token']))
-    {
-      $db = connect();
-
-      if(authenticate($db, $_REQUEST['account'], $_REQUEST['token']))
-      {
-        $query = $db->prepare("SELECT questions.id,courses.id AS `course_id`, courses.name AS `course`,questions.account,questions.question,questions.creation_time, COUNT(votes.id) > 0 AS `answered` FROM questions INNER JOIN courses ON questions.course=courses.id INNER JOIN memberships ON questions.course=memberships.course INNER JOIN answers ON questions.id=answers.question LEFT JOIN votes ON answers.id=votes.answer WHERE questions.id=:id AND (votes.account=:account OR votes.account IS NULL) GROUP BY questions.id LIMIT 1;");
-
-        $query->bindParam(":id", $id);
-        $id = $_REQUEST['id'];
-
-        $query->bindParam(":account", $account);
-        $account = $_REQUEST['account'];
-
-        $query->execute();
+  if($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if(isset($_REQUEST['account']) and isset($_REQUEST['passport']) and authenticate($_REQUEST['account'], $_REQUEST['passport'])) {
+      if(isset($_REQUEST['course']) and isset($_REQUEST['filter']) and strtoupper($_REQUEST['filter']) == 'ANSWERED') {
+        // Gets all questions answered by the current user in a course.
+        $db = connect();
+        $query = $db->prepare("SELECT questions.id `id`, questions.content `content`, questions.likes `likes`, questions.dislikes `dislikes`, questions.author `author`, questions.course `course` FROM questions INNER JOIN answers ON questions.id=answers.question INNER JOIN attempts ON answers.id=attempts.answer WHERE questions.course=:course AND questions.author!=:account1 AND attempts.author=:account2;");
+        $params = array(
+          'course' => $_REQUEST['course'],
+          'account1' => $_REQUEST['account'],
+          'account2' => $_REQUEST['account']
+        );
+        $query->execute($params);
         $dataset = $query->fetchAll();
-
-        if(sizeof($dataset) > 0)
-        {
-          $results['question'] = array(
-            'id' => $dataset[0]['id'],
-            'course_id' => $dataset[0]['course_id'],
-            'course' => $dataset[0]['course'],
-            'account' => $dataset[0]['account'],
-            'question' => $dataset[0]['question'],
-            'creation_time' => $dataset[0]['creation_time'],
-            'answered' => $dataset[0]['answered']
-          );
+        $output['questions'] = array();
+        for($i = 0; $i < sizeof($dataset); $i++) {
+          array_push($output['questions'], $dataset[$i]);
         }
-        else
-        {
-          http_response_code(404);
-
-          $results['error'] = true;
-          $results['error_msg'] = 'Not Found';
+      } else if(isset($_REQUEST['course']) and isset($_REQUEST['filter']) and strtoupper($_REQUEST['filter']) == 'UNANSWERED') {
+        // Gets all questions unanswered by the current user in a course.
+        $db = connect();
+        $query = $db->prepare("SELECT questions.id, questions.content, attempts.id,attempts.author FROM questions LEFT JOIN answers ON questions.id=answers.question LEFT JOIN attempts ON answers.id=attempts.id WHERE questions.course=:course AND questions.author!=:account1 AND (attempts.author=:account2 OR attempts.author IS NULL) GROUP BY questions.id HAVING COUNT(attempts.id)=0;");
+        $params = array(
+          'course' => $_REQUEST['course'],
+          'account1' => $_REQUEST['account'],
+          'account2' => $_REQUEST['account'],
+        );
+        $query->execute($params);
+        $dataset = $query->fetchAll();
+        $output['questions'] = array();
+        for($i = 0; $i < sizeof($dataset); $i++) {
+          array_push($output['questions'], $dataset[$i]);
+        }
+      } else if(isset($_REQUEST['filter']) and strtoupper($_REQUEST['filter']) == 'AUTHORED') {
+        // Gets all questions authored by the current user in a course.
+        $db = connect();
+        $query = $db->prepare("SELECT questions.id `id`, questions.content `content`, questions.likes `likes`, questions.dislikes `dislikes`, questions.author `author`, questions.course `course` FROM questions WHERE questions.course=:course AND questions.author=:account;");
+        $params = array(
+          'course' => $_REQUEST['course'],
+          'account' => $_REQUEST['account']
+        );
+        $query->execute($params);
+        $dataset = $query->fetchAll();
+        $output['questions'] = array();
+        for($i = 0; $i < sizeof($dataset); $i++) {
+          array_push($output['questions'], $dataset[$i]);
         }
       }
-    }
-    else
-    {
-      http_response_code(400);
-
-      $results['error'] = true;
-      $results['error_msg'] = 'Missing paramater(s)';
-    }
-  }
-  else if($_SERVER['REQUEST_METHOD'] == "PUT")
-  {
-    parse_str(file_get_contents('php://input'), $_ARGS);
-
-
-    if(isset($_ARGS['id']) && isset($_ARGS['question']) && isset($_ARGS['account']) && isset($_ARGS['token']))
-    {
+    } else if(isset($_REQUEST['course'])) {
+      // Gets all questions in a course.
       $db = connect();
-
-      if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
-      {
-        $query = $db->prepare("UPDATE questions SET question=:question WHERE id=:id;");
-
-        $id = $_ARGS['id'];
-        $question = $_ARGS['question'];
-
-        $query->bindParam(":id", $id);
-        $query->bindParam(":question", $question);
-
-        $query->execute();
+      $query = $db->prepare("SELECT questions.id `id`, questions.content `content`, questions.likes `likes`, questions.dislikes `dislikes`, questions.author `author`, questions.course `course` FROM questions WHERE questions.course=:course;");
+      $params = array(
+        'course' => $_REQUEST['course']
+      );
+      $query->execute($params);
+      $dataset = $query->fetchAll();
+      $output['questions'] = array();
+      for($i = 0; $i < sizeof($dataset); $i++) {
+        array_push($output['questions'], $dataset[$i]);
       }
-    }
-  }
-  else if($_SERVER['REQUEST_METHOD'] == "DELETE")
-  {
-    parse_str(file_get_contents('php://input'), $_ARGS);
-
-
-    if(isset($_ARGS['id']) && isset($_ARGS['account']) && isset($_ARGS['token']))
-    {
+    } else if(isset($_REQUEST['id'])) {
+      // Gets a specific question.
       $db = connect();
-
-      if(authenticate($db, $_ARGS['account'], $_ARGS['token']))
-      {
-        $query = $db->prepare("DELETE FROM questions WHERE id=:id;");
-
-        $id = $_ARGS['id'];
-
-        $query->bindParam(":id", $id);
-
-        $query->execute();
-      }
+      $query = $db->prepare("SELECT questions.id `id`, questions.content `content`, questions.likes `likes`, questions.dislikes `dislikes`, questions.author `author`, questions.course `course` FROM questions WHERE questions.id=:id LIMIT 1;");
+      $params = array('id' => $_REQUEST['id']);
+      $query->execute($params);
+      $dataset = $query->fetchAll();
+      $output['question'] = $dataset[0];
+    } else {
+      $output['error'] = true;
+      $output['status_code'] = 'INVALID_REQUEST';
     }
+  } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(isset($_REQUEST['account']) and isset($_REQUEST['passport']) and authenticate($_REQUEST['account'], $_REQUEST['passport'])) {
+      if(isset($_REQUEST['content']) and isset($_REQUEST['course'])) {
+        // Creates a new question.
+        $db = connect();
+        $query = $db->prepare("INSERT INTO questions (content, author, course) VALUES (:content, :author, :course);");
+        $params = array(
+          'content' => $_REQUEST['content'],
+          'author' => $_REQUEST['author'],
+          'course' => $_REQUEST['course']
+        );
+        $query->execute($params);
+      }
+    } else {
+      $output['error'] = true;
+      $output['status_code'] = 'INVALID_REQUEST';
+    }
+  } else {
+    $output['error'] = true;
+    $output['status_code'] = 'INVALID_METHOD';
   }
-  else
-  {
-    http_response_code(400);
-
-    $results['error'] = true;
-    $results['error_msg'] = 'The resource being accessed only accepts GET, PUT and DELETE requests';
-  }
-
-  echo json_encode($results);
+  echo json_encode($output);
   return;
-
 ?>

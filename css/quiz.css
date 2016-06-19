@@ -1,0 +1,46 @@
+.answer {
+  background: #E7EDF2;
+  border-radius: 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  margin: 5px 0;
+  padding: 15px;
+  width: 100%;
+}
+
+.answer:active {
+  background: #6D7072;
+}
+
+.correct {
+  background: #2DC76E;
+}
+
+.wrong {
+  background: #E74C3C;
+}
+
+@media(max-device-width: 1200px) {
+  div#body_wrap {
+    margin: 0;
+    width: 100%;
+  }
+
+  #question_title, #wrongQuestions_title {
+    font-size: 70px;
+  }
+
+  .answer {
+    font-size: 60px;
+    margin: 20px 0;
+    padding: 20px;
+  }
+
+  #wrongQuestions_list {
+    font-size: 60px;
+  }
+
+
+}

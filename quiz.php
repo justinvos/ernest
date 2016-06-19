@@ -1,7 +1,3 @@
-<?php
-  include("frontend.php");
-?>
-
 
 <html>
   <head>
@@ -10,22 +6,18 @@
     <title>ernest</title>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,300' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='css/base.css'>
-    <link rel='stylesheet' href='css/question.css'>
+    <link rel='stylesheet' href='css/quiz.css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   </head>
   <body>
-    <span id='question_arg' class='arg'><?php echo $_GET['id']; ?></span>
-    <span id='mode_arg' class='arg'><?php echo $_GET['mode']; ?></span>
-    <?php
-      printHeader();
-    ?>
+    <span id='course_arg' class='arg'><?php echo $_GET['course']; ?></span>
+
     <div id='body_wrap'>
       <h2 id='question_title'></h2>
-      <ul id='answer_list'>
-
+      <ul id='question_list'>
       </ul>
 
     </div>
-    <script src='js/question.js'></script>
+    <script src='js/quiz.js'></script>
   </body>
 </html>
