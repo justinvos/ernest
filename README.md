@@ -28,11 +28,13 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * Correct answer selection
 * Account registration
 * Login
+
 #### SUPPORTING
 * Course creation
 * Answer explanations
 * Password recovery
 * Email verification
+
 #### EXTRA
 * Scoring system
 * Up-voting and down-voting questions
