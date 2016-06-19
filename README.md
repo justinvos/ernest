@@ -34,6 +34,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * Answer explanations
 * Password recovery
 * Email verification
+* Landing page
 
 #### EXTRA
 * Scoring system
@@ -42,6 +43,7 @@ This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 2. The ful
 * Moderators
 * Applications to join a course
 * Commenting
+* Quiz mode
 * Sortable listing of questions
 * Leaderboards
 * Achievements
