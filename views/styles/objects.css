@@ -33,6 +33,18 @@
   border: #D0D0D0 solid 1px;
 }
 
+.answer.correct {
+  background: #2ecc71;
+  border: #27ae60 solid 1px;
+  color: white;
+}
+
+.answer.incorrect {
+  background: #e74c3c;
+  border: #c0392b solid 1px;
+  color: white;
+}
+
 @media (max-width: 1220px) {
   #page {
     box-sizing: border-box;

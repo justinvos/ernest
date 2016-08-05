@@ -6,7 +6,7 @@ var connectionDetails = JSON.parse(fs.readFileSync("db.json"));
 var connection = mysql.createConnection(connectionDetails);
 
 function selectQuestionsByCourse(course, callback) {
-  connection.query("SELECT id,title,course FROM questions WHERE course=?;", [course], function(err, rows, fields) {
+  connection.query("SELECT id, title, course FROM questions WHERE course=?;", [course], function(err, rows, fields) {
     if (err) {
       console.log(err);
     } else {
@@ -16,7 +16,7 @@ function selectQuestionsByCourse(course, callback) {
 }
 
 function selectAnswersByQuestion(question, callback) {
-  connection.query("SELECT id,content,question FROM answers WHERE question=?;", [question], function(err, rows, fields) {
+  connection.query("SELECT id, content, question, correct FROM answers WHERE question=?;", [question], function(err, rows, fields) {
     if (err) {
       console.log(err);
     } else {
