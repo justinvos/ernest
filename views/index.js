@@ -72,6 +72,10 @@ function onAnswerClick(event) {
         if(answer.correct == 1) {
           answerItem.addClass("correct");
           correct++;
+          setTimeout(function() {
+            question = questions.splice(0, 1)[0];
+            displayQuestion(question);
+          }, 3000);
         } else {
           answerItem.addClass("incorrect");
           incorrect++;
@@ -91,6 +95,6 @@ var incorrect = 0;
 
 get("/api/questions", {course: 1}, function(res) {
   questions = res.questions;
-  question = questions[0]
+  question = questions.splice(0, 1)[0];
   displayQuestion(question);
 });
