@@ -1,0 +1,58 @@
+#page {
+  margin: auto;
+  width: 1200px;
+}
+
+.answers {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: inherit;
+}
+
+.answer {
+  background: #FDFDFD;
+  border: #F5F5F5 solid 1px;
+  box-sizing: border-box;
+  display: block;
+  font-size: 20px;
+  margin: 10px 0;
+  padding: 25px;
+  width: inherit;
+}
+
+.answer:hover {
+  background: white;
+  border: #EEEEEE solid 1px;
+  cursor: pointer;
+}
+
+
+.answer.selected {
+  background: white;
+  border: #D0D0D0 solid 1px;
+}
+
+@media (max-width: 1220px) {
+  #page {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 10px;
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 700px) {
+  h1 {
+    font-size: 18px;
+  }
+
+  #title {
+    font-size: 20px;
+  }
+
+  .answer {
+    font-size: 18px;
+  }
+}
